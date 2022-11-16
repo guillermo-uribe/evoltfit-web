@@ -12,56 +12,44 @@ export default function Home() {
   const [datos, setDatos] = useState(null);
 
   //----------------------------------------------------------------
-  const [datosInput, setdatosInput] = useState({});
+  const [formInput, setFormInput] = useState({});
   const [errorDatosInput, setErrorDatosInput] = useState({});
 
   const handleOnInputChange = useCallback(
     (event) => {
       const { value, name } = event.target;
-      setdatosInput({
-        ...datosInput,
+
+      setFormInput({
+        ...formInput,
         [name]: value,
       });
 
-      //VALIDACIÓN INPUT NOMBRE
-      if (name == "nombre"){
-        var error = ['control'];
-        var regex = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;
-
-        if (!regex.test(value)){
-          error.push("error");
-        }
-
-        setErrorDatosInput({
-          ...errorDatosInput,
-          [name]: error,
-        });
-      }
     },
-    [datosInput, setdatosInput]
+    [formInput, setFormInput]
   );
 
   //----------------------------------------------------------------
+  const handleLogin = async () => {
 
-  useEffect(() => {
-    const fetchDatos = async () => {
-      const { data, error } = await supabase
-        .from('prueba')
-        .select()
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formInput.correo,
+      password: formInput.password,
+    })
 
-        if(error){
-          setFetchError('Error al conseguir datos');
-          setDatos(null);
-          console.log(error);
-        }
-        if(data){
-          setDatos(data);
-          setFetchError(null);
-        }
+    if(error){
+      setDatos(null);
+      setFetchError('Error en el login.');
+      console.log("Login fallido");
+      console.log(error);
+    } 
+    else {
+      setDatos(data);
+      setFetchError(null);
+      console.log("Login exitoso");
+      console.log(data);
+      router.push('/login')
     }
-
-    fetchDatos();
-  }, [])
+  }
 
   function incluye(arreglo, buscar) {
     if (arreglo != undefined){
@@ -96,23 +84,26 @@ export default function Home() {
         <h2 className="font-thin text-2xl">
           Login
         </h2>
-        <div className="form-control w-full max-w-xs">
-          <label className="label">
-            <span className="label-text">{"Nombre"}</span>
-            <span className="label-text-alt">{incluye(errorDatosInput.nombre, "dani") ? "uuy primo juan es mejor que tu en rocket" : ""}</span>
-          </label>
 
-          <input name="nombre" value={datosInput.nombre || ""} onChange={handleOnInputChange} type="text" placeholder="Nombre" className={"input input-bordered w-full max-w-xs " + (incluye(errorDatosInput.nombre, "error")  ? "input-error" : " ")}/>
-          
+        <div className="form-control w-full max-w-xs border-double border-4 p-6 m-6 border-gray-700 rounded-lg">
+          {/*CAMPO CORREO ------------------------ */}
           <label className="label">
-            <span className="label-text-alt">
-              {
-                (incluye(errorDatosInput.nombre, "dani")  ? "no mames que nombre mas qlero" : "") + 
-                (incluye(errorDatosInput.nombre, "error")  ? " No uses números ni caracteres especiales pinche perra" : "")
-              }</span>
-            <span className="label-text-alt">{incluye(errorDatosInput.nombre, "dani")  ? "haha ese en nombre de pvto" : ""}</span>
+            <span className="label-text mt-6">{"Correo"}</span>
           </label>
+          <input name="correo" value={formInput.correo || ""} onChange={handleOnInputChange} type="text" placeholder="Correo" className={"input input-bordered w-full max-w-xs " + (incluye(errorDatosInput.correo, "error")  ? "input-error" : " ")}/>
 
+          {/*CAMPO CONTRASEÑA ------------------------ */}
+          <label className="label">
+            <span className="label-text mt-6">{"Password"}</span>
+          </label>
+          <input name="password" value={formInput.password || ""} onChange={handleOnInputChange} type="password" placeholder="Password" className={"input input-bordered w-full max-w-xs " + (incluye(errorDatosInput.password, "error")  ? "input-error" : " ")}/>
+        
+          <button className="btn btn-outline btn-success rounded-full m-6 mt-12" onClick={handleLogin}>Iniciar Sesión</button>
+        
+          <p>{datos ? "LOGIN EXITOSO" : ""}</p>
+          <p>{datos ? datos.user.email : ""}</p>
+
+          <p>{fetchError ? "LOGIN FALLIDO" : ""}</p>
         </div>
 
 
@@ -125,7 +116,7 @@ export default function Home() {
 
         <button
           onClick={() => router.push('/')}
-          className="btn btn-info btn-outline btn-wide btn-md rounded-full my-10"
+          className="btn btn-info btn-outline btn-wide btn-md rounded-full my-0"
         >
           Inicio
         </button>
@@ -135,7 +126,7 @@ export default function Home() {
         <p className="font-light">
           {'Powered by '}
           <span className="animate-pulse font-bold text-fuchsia-500">
-            {'Chupapi Muñaño'}
+            {'Evoltfit'}
           </span>
         </p>
       </footer>
