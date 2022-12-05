@@ -7,21 +7,38 @@ import supabase from '../config/supabaseClient';
 
 export default function Home() {
   const router = useRouter();
-  const [usuario, setUsuario] = useState(null);
+  const [sesion, setSesion] = useState(null);
 
   useEffect(() => {
+    handleSesion()
+  
+  }, [])
 
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log("Cambió la sesión: " + event)
-      if (session) {
-        setUsuario(session)
-      }
-      else{
-        router.reload(window.location.pathname)
-      }
-    })
+  const handleSesion = async () => {
 
-  }, [router])
+    const { data, error } = await supabase.auth.getSession()
+
+    if(data.session){
+      setSesion(data.session);
+      console.log(data);
+    } 
+    else {
+      setSesion(null);
+      console.log("No hay Sesión " + error);
+      console.log(data);
+    }
+  }
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut()
+    
+    if(error){
+      console.log(error);
+    }
+    else{
+      router.reload(window.location.pathname);
+    }
+  }
 
   return (
     <div className = "bg-stone-100 w-full h-screen">
@@ -32,28 +49,31 @@ export default function Home() {
       </Head>
       <Navbar/>
       <main className={styles.main}>
-        <h1 className="font-thin text-2xl">
-          {"Bienvenido a... "}
           <br />
-          {usuario ? 
+          {sesion ? 
             (
               <div>
+                <h2 className="font-thin text-2xl">
+                  {"Bienvenido... "}
+                </h2>
                 <span className="text-2xl text-blue-600 font-normal">
-                  {"Bienvenido " + usuario.user.email}
+                  {sesion.user.email}
                 </span>
-                <button className="btn btn-error btn-lg m-6" onClick={() => supabase.auth.signOut()}>Cerrar Sesión</button>
               </div>
             )
             :
             (
-              <span className="animate-pulse text-8xl text-blue-600 font-normal">
-                la página de inicio
-              </span>
-
+              <div>
+                <h2 className="font-thin text-2xl">
+                  {"Bienvenido a... "}
+                </h2>
+                <span className="animate-pulse text-8xl text-blue-600 font-normal">
+                  la página de inicio
+                </span>
+              </div>
             )
           }
-          
-        </h1>
+        
         </main>
     </div>
    /* <div className={styles.container}>
