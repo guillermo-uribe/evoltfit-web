@@ -1,6 +1,3 @@
-.container {
-  padding: 0 2rem;
-}
 
 .main {
   min-height: 100vh;
@@ -10,22 +7,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.footer {
-  display: flex;
-  flex: 1;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
-}
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
 }
 
 .title a {
@@ -126,4 +107,46 @@
   .logo img {
     filter: invert(1);
   }
+} 
+
+/*SE*/
+
+.si{
+  display: flex;
+  padding: 12px;
+  margin: 10px;
+}
+.seccion{
+  background-color: white;
+  width: 80%;
+  height: 440px;
+  margin-top: 5%;
+}
+.s{
+  display: flex;
+  flex-direction: column;
+}
+.imagenes{
+  width: 200px;
+  height: 200px;
+}
+.inputs{
+  display: flex;
+  justify-content: center;
+}
+.inputs2{
+  display: flex;
+  flex-direction: column;
+}
+.radiu{
+  display: flex;
+  flex-direction: column;
+}
+.radiu2{
+  display: flex;
+  align-items: center;
+}
+.radiuD{
+  cursor: not-allowed;
+  color: #ccc;
 }
