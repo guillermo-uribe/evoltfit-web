@@ -11,7 +11,7 @@ const CardsPrecios = ({
   no_mes = 0,
   precio_id = "",
   signo = "$",
-  frecuencia = "mes",
+  frecuencia = "month",
   caracteristicas = [],
   popular = false,
 }) => {
@@ -35,29 +35,6 @@ const CardsPrecios = ({
       console.log("No hay Sesión " + error);
       console.log(data);
     }
-  }
-  
-  async function checkout({ lineItems }, nombre, no_mes) {
-    localStorage.setItem("NombrePaquete", nombre);
-    localStorage.setItem("Meses", no_mes);
-
-    let stripePromise = null;
-
-    const getStripe = () => {
-      if (!stripePromise) {
-        stripePromise = loadStripe(process.env.NEXT_PUBLIC_API_KEY);
-      }
-      return stripePromise;
-    };
-
-    const stripe = await getStripe();
-
-    await stripe.redirectToCheckout({
-      mode: "payment",
-      lineItems,
-      successUrl: `http://localhost:3000/successPay`,
-      cancelUrl: `http://localhost:3000/failurePay`,
-    });
   }
 
   const router = useRouter();
@@ -96,31 +73,6 @@ const CardsPrecios = ({
             </li>
           ))}
         </ul>
-        {/* Boton del plan*/}
-
-        <button
-          onClick={() => {
-            checkout(
-              {
-                lineItems: [
-                  {
-                    price: precio_id,
-                    quantity: 1,
-                  },
-                ],
-              },
-              nombre,
-              no_mes
-            );
-          }}
-          className={`font-source mt-12 w-full py-4 px-8 rounded-lg text-lg whitespace-nowrap focus:outline-none focus:ring-4 focus:ring-blue-700 focus:ring-opacity-50 transition-all ${
-            popular
-              ? "text-white bg-blue-600 hover:bg-blue-700 hover:scale-105 transform"
-              : "bg-white text-blue-700 hover:bg-gray-50"
-          }`}
-        >
-          Obtenlo ya
-        </button>
       </div>
     </div>
   );

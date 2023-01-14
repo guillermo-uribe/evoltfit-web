@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from "react";
 import Navbar from "./Componentes/Navbar";
 import Footer from "./Componentes/Footer";
 import supabase from "../config/supabaseClient";
-import { Image } from "next/image";
 
 export default function Home() {
   const router = useRouter();
@@ -30,12 +29,8 @@ export default function Home() {
   );
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      console.log("Cambió la sesión: " + event);
-      if (session) {
-        router.push("/");
-      }
-    });
+    localStorage.removeItem("NombrePaquete");
+    localStorage.removeItem("Meses");
   }, []);
 
   //----------------------------------------------------------------
@@ -54,8 +49,7 @@ export default function Home() {
       setDatos(data);
       setFetchError(null);
       console.log("Login exitoso");
-      console.log(data);
-      //router.push('/')
+      router.push('/')
     }
   };
 

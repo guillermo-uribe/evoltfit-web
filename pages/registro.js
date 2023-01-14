@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
+import { createAvatar } from '@dicebear/core';
+import { micah } from '@dicebear/collection';
 import Navbar from "./Componentes/Navbar";
 import Footer from "./Componentes/Footer";
 import supabase from "../config/supabaseClient";
@@ -15,6 +17,11 @@ export default function Home() {
   //----------------------------------------------------------------
   const [formInput, setFormInput] = useState({});
   const [errorDatosInput, setErrorDatosInput] = useState({});
+
+  useEffect(() => {
+    localStorage.removeItem("NombrePaquete");
+    localStorage.removeItem("Meses");
+  }, [])
 
   const handleOnInputChange = useCallback(
     (event) => {
@@ -100,40 +107,49 @@ export default function Home() {
       formInput.confirmarPassword != ''
       ) 
       {
-      const { data, error } = await supabase.auth.signUp({
-        email: formInput.correo,
-        password: formInput.password,
-        options: {
-          data: {
-            nombre: formInput.nombre,
-          }
-        }
-      });
-
-      if (error) {
-        setDatos(null);
-        setFetchError("Error al conseguir datos");
-        console.log("Error: " + error);
-      } else {
-        setDatos(data);
-        setFetchError(null);
+      
+        const avatar = createAvatar(micah, {
+          seed: formInput.nombre,
+        });
         
-        const { error } = await supabase
-        .from('perfiles')
-        .insert({
-          id: data.user.id, 
-          nombre: formInput.nombre,
-          })
+        const avatarSvg = await avatar.toDataUri();
+        console.log(avatarSvg);
 
-          if(error) {
-            alert("ERROR: Hubo un error al generar el registro.")
-            console.log(error)
+        const { data, error } = await supabase.auth.signUp({
+          email: formInput.correo,
+          password: formInput.password,
+          options: {
+            data: {
+              nombre: formInput.nombre,
+            }
           }
-          else{
-            console.log("Registro exitoso :)");
-          }
+        });
+
+        if (error) {
+          setDatos(null);
+          setFetchError("Error al conseguir datos");
+          console.log("Error: " + error);
+        } else {
+          setDatos(data);
+          setFetchError(null);
+          
+          const { error } = await supabase
+          .from('perfiles')
+          .insert({
+            id: data.user.id, 
+            nombre: formInput.nombre,
+            avatar: avatarSvg
+            })
+
+            if(error) {
+              alert("ERROR: Hubo un error al generar el registro.")
+              console.log(error)
+            }
+            else{
+              console.log("Registro exitoso :)");
+            }
+        }
       }
-    }
   };
 
   function incluye(arreglo, buscar) {
@@ -169,7 +185,7 @@ export default function Home() {
 
       <main>
         <section className="flex flex-col md:flex-row h-screen items-center">
-          <div className="mb-20 bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center">
+          <div className=" bg-white w-full md:max-w-md lg:max-w-full md:mx-auto md:mx-0 md:w-1/2 xl:w-1/3 h-screen px-6 lg:px-16 xl:px-12 flex items-center justify-center">
             <div className="w-full h-100">
               <h1 className="text-xl md:text-2xl font-bold leading-tight">
                 Registro
@@ -400,6 +416,9 @@ export default function Home() {
           </div>
         </section>
       </main>
+      <br/>
+      <br/>
+      <br/>
       <Footer />
     </div>
   );
