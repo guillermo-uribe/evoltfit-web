@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import { useRouter } from "next/router";
-import Navbar from './Componentes/Navbar';
-import Footer from "./Componentes/Footer";
+import Navbar from '/Components/Navbar';
+import Footer from "/Components/Footer";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import shortid from 'shortid';
@@ -16,9 +16,29 @@ export default function Home() {
   const router = useRouter();
   const { formData2, checkboxes, arreglo } = router.query;
   //JSON
-  const formulario = JSON.parse(formData2);
-  const herramientas = JSON.parse(checkboxes);
-  const opciones = JSON.parse(arreglo);
+  if (typeof formData2 !== "undefined" && formData2 !== "") {
+    const formulario = JSON.parse(formData2);
+  }
+  
+  if (typeof checkboxes !== "undefined" && checkboxes !== "") {
+    const herramientas = JSON.parse(checkboxes);
+  }
+  
+  /*
+  if (typeof arreglo !== "undefined" && arreglo !== "") {
+    const opciones = JSON.parse(arreglo);
+  }
+      HUBO ERROR CON ESTA MADRE DE 'opciones' PORQUE ESTABA 'UNDEFINED' 
+      
+      Le agregué esta declaración antes como arreglo vacío y ya jaló.
+      |
+      |
+      V
+  */
+  let opciones = [];
+  if (typeof arreglo !== "undefined" && arreglo !== "") {
+    opciones = JSON.parse(arreglo);
+  }
   //contenidos de puede llegar a contener cada dia
   const contenido1 = [];//lUNES
   const contenido2 = [];//MARTES
