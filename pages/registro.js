@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import { createAvatar } from '@dicebear/core';
 import { micah } from '@dicebear/collection';
-import Navbar from "./Nav/Navbar";
-import Footer from "./Nav/Footer";
+import Navbar from "/Components/Navbar";
+import Footer from "/Components/Footer";
 import supabase from "../config/supabaseClient";
 
 export default function Home() {

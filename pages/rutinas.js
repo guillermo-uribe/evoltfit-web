@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
-import Navbar from "./Nav/Navbar";
-import Footer from "./Nav/Footer";
+import Navbar from "/Components/Navbar";
+import Footer from "/Components/Footer";
 import CardRutina from "/Components/CardRutina";
 import supabase from "../config/supabaseClient";
 

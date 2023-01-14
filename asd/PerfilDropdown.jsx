@@ -26,14 +26,14 @@ const PerfilDropdown = ({ sesion, perfil }) => {
 
     return (
         <div className="">
-            <img src={perfil.avatar} className='hidden lg:inline w-16 bg-blue-500 rounded-full border-blue-700 cursor-pointer hover:border-2 duration-75' alt="avatar" onClick={() => {setToggleDropdown(!toggleDropdown)}}/>
-            <div className="flex flex-row lg:hidden">
-                <img src={perfil.avatar} className='lg: w-16 bg-blue-500 rounded-full border-blue-700 cursor-pointer hover:border-2 duration-75' alt="avatar" onClick={() => {router.push('/perfil')}}/>
+            <img src={perfil.avatar} className='hidden md:inline w-16 bg-blue-500 rounded-full border-blue-700 cursor-pointer hover:border-2 duration-75' alt="avatar" onClick={() => {setToggleDropdown(!toggleDropdown)}}/>
+            <div className="flex flex-row md:hidden">
+                <img src={perfil.avatar} className='md: w-16 bg-blue-500 rounded-full border-blue-700 cursor-pointer hover:border-2 duration-75' alt="avatar" onClick={() => {router.push('/perfil')}}/>
                 <span className="my-auto ml-3 text-secondary text-xl cursor-pointer hover:underline whitespace-nowrap text-ellipsis overflow-hidden w-36" onClick={() => {router.push('/perfil')}}>{perfil.nombre}</span>
             </div>
             
             {toggleDropdown ? 
-                <div className="absolute flex flex-col bg-white mt-2 rounded-md shadow-lg lg:right-6 border border-gray-200">
+                <div className="absolute flex flex-col bg-white mt-2 rounded-md shadow-lg md:right-6 border border-gray-200">
                     <div className="flex flex-row p-3">
                         <img src={perfil.avatar} className='w-16 bg-blue-500 rounded-full border-blue-700 cursor-pointer hover:border-2 duration-75' alt="avatar" onClick={() => {router.push('/perfil')}}/>
                         <div className="flex flex-col ml-4 my-auto">
