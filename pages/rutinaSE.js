@@ -8,37 +8,32 @@ import styles from "../styles/Home.module.css";
 import shortid from 'shortid';
 
 export default function Home() {
-  //Variables generales
-  const [seriesG, setSeriesG] = useState("5");
-  const [repeticionesG, setRepeticionesG] = useState("12");
-  const [descanso, setDescanso] = useState("3m");
+  /*Variables generales
+  let seriesG=5
+  let repeticionesG= 13;
+  let descanso= "3min";
+  */
   //Recuperar valores
   const router = useRouter();
   const { formData2, checkboxes, arreglo } = router.query;
   //JSON
-  if (typeof formData2 !== "undefined" && formData2 !== "") {
-    const formulario = JSON.parse(formData2);
+
+  let formulario = {};
+  if (formData2) {
+    formulario = JSON.parse(formData2);
   }
-  
-  if (typeof checkboxes !== "undefined" && checkboxes !== "") {
-    const herramientas = JSON.parse(checkboxes);
+
+  let herramientas = {};
+  if (checkboxes) {
+    herramientas = JSON.parse(checkboxes);
   }
-  
-  /*
-  if (typeof arreglo !== "undefined" && arreglo !== "") {
-    const opciones = JSON.parse(arreglo);
-  }
-      HUBO ERROR CON ESTA MADRE DE 'opciones' PORQUE ESTABA 'UNDEFINED' 
-      
-      Le agregué esta declaración antes como arreglo vacío y ya jaló.
-      |
-      |
-      V
-  */
-  let opciones = [];
-  if (typeof arreglo !== "undefined" && arreglo !== "") {
+
+  let opciones = ['0','masamuscular','principiante','30min','superior']
+  if(arreglo){
     opciones = JSON.parse(arreglo);
   }
+  
+
   //contenidos de puede llegar a contener cada dia
   const contenido1 = [];//lUNES
   const contenido2 = [];//MARTES
@@ -49,77 +44,97 @@ export default function Home() {
 
 
   //INICIO DEL SE
-  
+  const objetivo = opciones[1]
+  const tiempo = opciones[3]
 
+  useEffect(() => {
+    localStorage.removeItem("NombrePaquete");
+    localStorage.removeItem("Meses");
+  }, [])
 
-   //____________________________________________pregunta de objetivo
-  if (opciones[1]==='masamuscular') {
-    console.log("masamuscular");
-  } else if (opciones[1]==='resistencia') {
-    console.log("resistencia");
-  } else if (opciones[1]==='fuerza') {
-    console.log("fuerza");
-  } else if (opciones[1]==='perdergrasa') {
-    console.log("perdergrasa");
-  }  else if (opciones[1]==='salud') {
-    console.log("salud");
-  } else {
-    console.log("Error en el SE P:OBJETIVO");
+  const opcionesEjercicio = {
+    masamuscular: {
+      '30min': { seriesG: 4, repeticionesG: 6, descanso: "1min" },
+      '1hr': { seriesG: 4, repeticionesG: 8, descanso: "1min 30sec" },
+      '1hr 30': { seriesG: 3, repeticionesG: 10, descanso: "2min" },
+      '2hr': { seriesG: 3, repeticionesG: 12, descanso: "2min" },
+    },
+    perdergrasa: {
+      '30min': { seriesG: 4, repeticionesG: 6, descanso: "1min" },
+      '1hr': { seriesG: 4, repeticionesG: 8, descanso: "1min 30sec" },
+      '1hr 30': { seriesG: 3, repeticionesG: 10, descanso: "2min" },
+      '2hr': { seriesG: 3, repeticionesG: 12, descanso: "2min" },
+    },
+    salud: {
+      '30min': { seriesG: 4, repeticionesG: 6, descanso: "1min" },
+      '1hr': { seriesG: 4, repeticionesG: 8, descanso: "1min 30sec" },
+      '1hr 30': { seriesG: 3, repeticionesG: 10, descanso: "2min" },
+      '2hr': { seriesG: 3, repeticionesG: 12, descanso: "2min" },
+    },
+    resistencia: {
+      '30min': { seriesG: 2, repeticionesG: 12, descanso: "30sec" },
+      '1hr': { seriesG: 2, repeticionesG: 16, descanso: "30sec" },
+      '1hr 30': { seriesG: 3, repeticionesG: 16, descanso: "75sec" },
+      '2hr': { seriesG: 3, repeticionesG: 20, descanso: "75sec" },
+    },
+    fuerza: {
+      '30min': { seriesG: 3, repeticionesG: 5, descanso: "2 min" },
+      '1hr': { seriesG: 3, repeticionesG: 5, descanso: "3 min" },
+      '1hr 30': { seriesG: 4, repeticionesG: 5, descanso: "3 min" },
+      '2hr': { seriesG: 5, repeticionesG: 5, descanso: "Mas de 3 min" },
+    },
+  };
+
+  if (!opcionesEjercicio[objetivo] || !opcionesEjercicio[objetivo][tiempo]) {
+    console.log("Error en el objetivo o tiempo seleccionado.");
+    //return;
   }
-
-     //____________________________________________pregunta de experiencia
-     if (opciones[2]==='principiante') {
-      console.log("principiante");
-    } else if (opciones[2]==='intermedio') {
-      console.log("intermedio");
-    } else if (opciones[2]==='avanzado') {
-      console.log("avanzado");
-    } else if (opciones[2]==='experimentado') {
-      console.log("experimentado");
-    } else {
-      console.log("Error en el SE P:OBJETIVO");
-    }
+  //Aqui se asignan los valores de repeticion, series y descanso.
+  const { seriesG, repeticionesG, descanso } = opcionesEjercicio[objetivo][tiempo];
 
 
-  //____________________________________________pregunta de tiempo
-  if (opciones[2]==='30min') {
-    console.log("30min");
-  } else if (opciones[2]==='1hr') {
-    console.log("1hr");
-  } else if (opciones[2]==='1hr 30') {
-    console.log("1hr 30");
-  } else if (opciones[2]==='2hr') {
-    console.log("2hr");
-  } else {
-    console.log("Error en el SE P:TIEMPO");
-  }
+
+
+
 
   //____________________________________________pregunta de enfoque.
-  if (opciones[4]==='superior') {
+  if (opciones[4] === 'superior') {
     //push pull leg
     console.log("1");
-  } else if (opciones[4]==='brazos') {
+  } else if (opciones[4] === 'brazos') {
     //pecho espalda brazo pierna
     console.log("2");
-  } else if (opciones[4]==='pierna') {
+  } else if (opciones[4] === 'pierna') {
     //pierna push pull intensidad
     console.log("3");
-  } else if (opciones[4]==='completo') {
+  } else if (opciones[4] === 'completo') {
     //push pull leg intensidad equilibrada ejercicios compuestos
     console.log("4");
   } else {
     console.log("Error en el SE P:ENFOQUE");
   }
 
+  //____________________________________________pregunta de experiencia
+  if (opciones[2] === 'principiante') {
+    console.log("principiante");
+  } else if (opciones[2] === 'intermedio') {
+    console.log("intermedio");
+  } else if (opciones[2] === 'avanzado') {
+    console.log("avanzado");
+  } else if (opciones[2] === 'experimentado') {
+    console.log("experimentado");
+  } else {
+    console.log("Error en el SE P:OBJETIVO");
+  }
 
   //llenar temporal
   for (let i = 0; i < 5; i++) {
     contenido1.push({ valor: 1, series: seriesG, repeticiones: repeticionesG });
-    contenido2.push({ valor: 1, series: seriesG - 1, repeticiones: repeticionesG });
-    contenido3.push({ valor: 1, series: seriesG, repeticiones: repeticionesG });
-    contenido4.push({ valor: 1, series: seriesG, repeticiones: repeticionesG });
-    contenido5.push({ valor: 1, series: seriesG, repeticiones: repeticionesG });
-    contenido6.push({ valor: 1, series: seriesG, repeticiones: repeticionesG });
+    contenido2.push({ valor: 2, series: seriesG, repeticiones: repeticionesG });
+    contenido3.push({ valor: 3, series: seriesG, repeticiones: repeticionesG });
+    contenido4.push({ valor: 4, series: seriesG, repeticiones: repeticionesG });
+    contenido5.push({ valor: 5, series: seriesG, repeticiones: repeticionesG });
+    contenido6.push({ valor: 6, series: seriesG, repeticiones: repeticionesG });
   }
 
 
@@ -142,12 +157,6 @@ export default function Home() {
     console.log(herramientas);
     console.log(opciones);
   };
-
-  useEffect(() => {
-    localStorage.removeItem("NombrePaquete");
-    localStorage.removeItem("Meses");
-  }, [])
-
 
   return (
     <div className="bg-blue-100 w-full h-screen">

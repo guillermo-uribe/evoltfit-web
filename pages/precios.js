@@ -19,8 +19,8 @@ const plans = [
     frecuencia: "mes",
     popular: false,
     caracteristicas: [
-      "Facturado cada 3 meses",
-      "El paquete más económico",
+      "Duración de 1 mes",
+      "Perfecto para probar EFP",
       "Obten todos los beneficios",
       "Desbloquea funciones extras",
     ],
@@ -33,7 +33,7 @@ const plans = [
     frecuencia: "mes",
     popular: true,
     caracteristicas: [
-      "Facturado cada 6 meses",
+      "Duración de 6 meses",
       "Ahorra el 15%",
       "Obten todos los beneficios",
       "Desbloquea funciones extras",
@@ -47,7 +47,7 @@ const plans = [
     frecuencia: "mes",
     popular: false,
     caracteristicas: [
-      "Facturado cada 12 meses",
+      "Duración de 12 meses",
       "Ahorra el 30%",
       "Obten todos los beneficios",
       "Desbloquea funciones extras",
@@ -126,10 +126,10 @@ export default function Home() {
       <div className="relative">
         <div></div>
         <img className="transparencia-banner opacity-80" src="bcprice.jpg" />
-        <h1 className="absolute text-4xl italic font-bold text-center text-blue-700 top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2  xl:absolute xl:text-5xl">
+        <h1 className="absolute text-3xl italic font-bold text-center text-blue-700 top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2  xl:absolute xl:text-5xl">
           EvoltFit Plus
         </h1>
-        <h1 className="absolute top-32 text-lg text-center font-bebas text-white tracking-wider left-1/2 -translate-x-1/2 -translate-y-1/2 xl:text-4xl xl:top-64 ">
+        <h1 className="absolute top-24 text-base text-center font-bebas text-white tracking-wider left-1/2 -translate-x-1/2 -translate-y-1/2 xl:text-4xl xl:top-64 ">
           Precios diseñados para tus objetivos
         </h1>
         <Link
@@ -139,7 +139,7 @@ export default function Home() {
           offset={50}
           duration={800}
         >
-          <button className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 mt-12 rounded-md hover:scale-110 transition-all font-catamaran top-36 py-3 px-6  xl:w-64 xl:py-4 xl:px-8   xl:rounded-lg xl:text-xl whitespace-nowrap bg-blue-600 text-white  xl:top-72">
+          <button className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 mt-12 rounded-md hover:scale-110 transition-all font-catamaran top-28 py-2  px-4 xl:w-64 xl:py-4 xl:px-8 xl:rounded-lg xl:text-xl whitespace-nowrap bg-blue-600 text-white  xl:top-72">
             Pruébalos
           </button>
         </Link>
@@ -292,12 +292,19 @@ export default function Home() {
       </h1>
 
       <br />
-
+      {sesion ? (
+      <div className="grid place-items-center">
+        <button onClick={() => router.push("/herramientas")} className="mt-1 rounded-md hover:scale-110 transition-all font-catamaran top-28 py-2  px-4 xl:w-64 xl:py-4 xl:px-8 xl:rounded-lg xl:text-xl whitespace-nowrap bg-blue-600 text-white  xl:top-72">
+            Ir a herramientas
+          </button>
+      </div>
+      ) : (
       <div className="grid place-items-center">
         <button onClick={() => router.push("../registro")} className="button">
           <span>Registrate</span>
         </button>
       </div>
+      )}
 
       <br />
       <br />
