@@ -1,88 +1,154 @@
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Navbar from "/components/Navbar";
 import Footer from "/components/Footer";
 import supabase from "/config/supabaseClient";
 import CardCalorias from "../components/CardCalorias";
+import { CircularProgressbar } from "react-circular-progressbar";
+import AsignarMeta from "../components/AsignarMeta";
 
 export default function VisualizadorCalorias() {
-
   const router = useRouter();
 
+  const currentDate = new Date();
+  const fecha_act =
+    currentDate.getFullYear() +
+    "-" +
+    currentDate.getMonth() +
+    1 +
+    "-" +
+    currentDate.getDate();
+
+  const fecha =
+    currentDate.getDate() +
+    "/" +
+    currentDate.getMonth() +
+    1 +
+    "/" +
+    currentDate.getFullYear();
+
   const [sesion, setSesion] = useState(null);
-  // const [paginacion, setPaginacion] = useState(1);
   const [registros, setRegistros] = useState(null);
-  const [cantidad, setCantidad] = useState(null);
+  const [sumatoriaCalorias, setSumatoriaCalorias] = useState(null);
+  const [toggleSeleccionar, setToggleSeleccionar] = useState(false);
+  const [metaCalorias, setMetaCalorias] = useState(null);
+
+  var sumatoriaCal = 0;
+  var caloriasAsignadas = 2000;
 
   useEffect(() => {
-    handleSesion()
+    handleSesion();
     localStorage.removeItem("NombrePaquete");
     localStorage.removeItem("Meses");
-  }, [])
+  }, []);
 
   const nuevoRegistro = async () => {
     let query = supabase
-    .from('calorias_registro')
-    .select('nombre', { count: 'exact', head: true })
-    .eq('usuario', sesion.user.id)
+      .from("calorias_registro")
+      .select("nombre", { count: "exact", head: true })
+      .eq("usuario", sesion.user.id);
 
-    const count = await query
+    const count = await query;
 
     const { data, error } = await supabase
-      .from('calorias_registro')
+      .from("calorias_registro")
       .insert({
-        usuario: sesion.user.id, 
-        nombre: "Registro caloríco " + (count.count + 1)
-        })
-      .select()
+        usuario: sesion.user.id,
+        nombre: "Registro caloríco " + (count.count + 1),
+        fecha_creacion: fecha,
+        fecha_formato_orden: fecha_act
+      })
+      .select();
 
     if (error) {
-      console.log(error)
-      console.log("ERROR: Hubo un error al crear un nuevo registro.")
-    }
-    else{
+      console.log(error);
+      console.log("ERROR: Hubo un error al crear un nuevo registro.");
+    } else {
       //console.log(data);
       //console.log("Se creó una nueva rutina.")
       router.push({
-        pathname: '/addCalorias',
-        query: { rutina: data[0].id }
-      })
+        pathname: "/addCalorias",
+        query: { rutina: data[0].id },
+      });
     }
-  }
+  };
 
   async function obtenerRegistros(session) {
     const { data, error } = await supabase
-    .from('calorias_registro')
-    .select('*')
-    .eq('usuario', session.user.id)
+      .from("calorias_registro")
+      .select("*")
+      .eq("usuario", session.user.id)
+      .order("fecha_formato_orden", {ascending: false})
+
 
     if (error) {
-      console.log('ERROR: Hubo un error al recuperar la rutina.')
-      console.log(error)
-    }
-    else{
-      console.log(data);
+      console.log("ERROR: Hubo un error al recuperar el registro.");
+      console.log(error);
+    } else {
+      //console.log(data);
       setRegistros(data);
+    }
+
+    let { data: res, err } = await supabase
+      .from("calorias_productos_totales")
+      .select(
+        `
+      producto_id (
+      calorias
+    )`
+      )
+      .match({ usuario: session.user.id, fecha_agregado: fecha_act });
+
+    if (err) {
+      console.log(
+        "ERROR: Hubo un error al recuperar todos los productos del usuario."
+      );
+      console.log(err);
+    } else {
+      //console.log(res);
+      for (var i = 0; i <= res.length - 1; i++) {
+        sumatoriaCal = sumatoriaCal + res[i].producto_id.calorias;
+      }
+      setSumatoriaCalorias(sumatoriaCal);
+    }
+  }
+
+  async function obtenerMeta(session){
+    let { data: res, err } = await supabase
+    .from("calorias_metas")
+    .select("cals_meta")
+    .eq("usuario", session.user.id)
+
+    if(err){
+      console.log("ERROR: Hubo un error obteniendo la meta del ususario")
+      console.log(err)
+    }else{
+      if(res.length == 0){
+        console.log("El usuario no tiene una meta establecida")
+        console.log(res)
+      }else{
+        console.log("Meta obtenida exitosamente")
+        //console.log(res)
+        setMetaCalorias(res[0].cals_meta)
+      }
+      
     }
   }
 
   const handleSesion = async () => {
+    const { data, error } = await supabase.auth.getSession();
 
-    const { data, error } = await supabase.auth.getSession()
-
-    if(data.session){
+    if (data.session) {
       setSesion(data.session);
       obtenerRegistros(data.session);
+      obtenerMeta(data.session);
       //console.log(data);
-    } 
-    else {
+    } else {
       setSesion(null);
-      router.push('/login')
+      router.push("/login");
     }
-  }
-
-
+  };
 
   return (
     <div className="bg-blue-50 w-full">
@@ -99,30 +165,36 @@ export default function VisualizadorCalorias() {
         <br />
         <br />
         <br />
-        <div className="flex flex-col items-center">
-          <button className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={() => {router.push("/agregarProducto")}}>Agregar producto</button>
-        </div>
-        <br />
-    
-        {
-            registros ? 
-            <div className="mx-auto mt-6">
-              <div className="flex flex-col w-9/12 mx-auto">
-                <h2 className="text-2xl ">{"Registros calorícos de " + sesion.user.user_metadata.nombre}</h2>
-                <br/>
-                { registros.length === 0 ? 
-                    <h2 className = "text-center">No hay registros que mostrar</h2>
-                  :
-                    (registros.map((registro) => (
-                        <CardCalorias key={registro.id} registro={registro}/>
-                      ))
-                    )
-                }
+        <div
+          className={
+            "grid grid-cols-2 gap-1 ml-10" +
+            (toggleSeleccionar ? "blur-sm" : "")
+          }
+        >
+          {registros ? (
+            <div className="mt-6 flex flex-col">
+              <h2 className="text-2xl">
+                {"Registros calorícos de " + sesion.user.user_metadata.nombre}
+              </h2>
+              <br />
+              <div className="flex flex-col w-8/12 mx-auto">
+                <button
+                  type="submit"
+                  onClick={nuevoRegistro}
+                  className=" text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base px-5 py-2.5 text-center mr-2 mb-2 "
+                >
+                  Nuevo registro
+                </button>
               </div>
-              <br/>
-              <div className = "flex justify-center">
-              <button type="submit" onClick={nuevoRegistro} className=" text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Nuevo registro</button>
-              </div>
+              <br />
+              {registros.length === 0 ? (
+                <h2 className="text-center">No hay registros que mostrar</h2>
+              ) : (
+                registros.map((registro) => (
+                  <CardCalorias key={registro.id} registro={registro} />
+                ))
+              )}
+
               {/* PAGINACIÓN */}
               {/* <div className="flex flex-col items-center mb-2 mt-4">
                 <div className="btn-group">
@@ -135,18 +207,73 @@ export default function VisualizadorCalorias() {
                   {(paginacion >= (cantidad/10))? "" : <button className="" onClick={() => {setPaginacion(paginacion + 1)}}>»</button>}
                 </div>
               </div> */}
-            </div> 
-            : 
+            </div>
+          ) : (
             <div className="mt-12">
               <div className="loader mt-6"></div>
             </div>
-          }
+          )}
+          <div>
+            <div className="ml-10 mr-10 grid place-items-center border-blue-600 border-2 rounded-md shadow-2xl relative pt-16 pb-16">
+              <h5 className="text-2xl font-bold tracking-tight text-blue-600 mb-2">
+                Calorías consumidas - {fecha}
+              </h5>
+              <div style={{ width: 150, height: 150 }}>
+                <CircularProgressbar
+                  value={sumatoriaCalorias}
+                  maxValue={metaCalorias}
+                  text="Calorías"
+                />
+              </div>
+  
+              {metaCalorias ? (
+                <h5 className="text-2xl font-bold tracking-tight text-blue-600 mt-2">
+                {sumatoriaCalorias} / {metaCalorias}
+                </h5>
+              ) : (
+                ''
+              )}
+              
+                { sumatoriaCalorias > metaCalorias && metaCalorias > 0 ? (
+                  <div className = "grid place-items-center">
+                     <br/>
+                  <div
+                    id="toast-danger"
+                    className="flex items-center p-4 mb-4 w-full max-w-xs bg-red-200 rounded-lg shadow"
+                    role="alert"
+                  >
+                    <div className="ml-3 text-sm font-normal text-center">
+                      Cuidado, tus calorías totales han sobrepasado tu meta del día.
+                    </div>
+                  </div>
+                  </div>
+                ) : (
+                  ""
+                )
+                }
+
+              <button
+                onClick={() => setToggleSeleccionar(!toggleSeleccionar)}
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-base px-5 py-2.5 text-center mt-5"
+              >
+                Asignar meta
+              </button>
+            </div>
+          </div>
+          <br />
+        </div>
+
+        {toggleSeleccionar ? (
+          <AsignarMeta setToggleSeleccionar={setToggleSeleccionar} />
+        ) : (
+          ""
+        )}
         <br />
         <br />
         <br />
         <br />
         <br />
-        
+
         <Footer></Footer>
       </main>
     </div>
