@@ -16,6 +16,7 @@ export default function Home() {
     handleSesion();
     localStorage.removeItem("NombrePaquete");
     localStorage.removeItem("Meses");
+
     if (flag == true) {
       if (sesion) {
         async function checkPlanStatus() {
@@ -41,23 +42,23 @@ export default function Home() {
                 "La fecha de termino es: " + sus_pagos[0].fecha_termino
               );
 
-              const current = new Date();
+              var today = new Date();
+              // getDate() Regresa el día del mes (Desde 1 a 31)
+              var day_Actual = today.getDate();
+              // getMonth() Regresa el mes (Desde 0 a 11)
+              var month_Actual = today.getMonth() + 1;
+              // getFullYear() Regresa el año actual
+              var year_Actual = today.getFullYear();
 
-              const fecha_act =
-                current.getFullYear() +
-                "-" +
-                current.getMonth() +
-                1 +
-                "-" +
-                current.getDate();
+              var fecha_Actual = `${year_Actual}-${"0" + month_Actual}-${"0" + day_Actual}`
 
-              console.log("Fecha de hoy: " + fecha_act);
+              console.log("Fecha de hoy: " + fecha_Actual);
 
-              if (fecha_act == sus_pagos[0].fecha_termino) {
+              if ((fecha_Actual == sus_pagos[0].fecha_termino) || (sus_pagos[0].fecha_termino < fecha_Actual)) {
                 console.log("Ya se acabó el plan");
                 let { data, error } = await supabase
                   .from("sus_pagos")
-                  .update({ activo: 0 })
+                  .update({ activo: 0})
                   .eq("id_usuario", sesion.user.id);
 
                 if (error) {
@@ -775,9 +776,11 @@ export default function Home() {
             </h2>
 
             <p className="mt-4 text-sm text-gray-500 lg:text-base">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Blanditiis commodi cum cupiditate ducimus, fugit harum id
-              necessitatibus odio quam quasi, quibusdam rem tempora voluptates.
+              EvoltFit esta preparado para ayudar a todo tipo de usuarios. Si eres 
+              principiante te proporcionamos la guía perfecta para obtener la mejor rutina para ti
+              y así aprendas lo que le funciona a tu cuerpo; en cambio si eres alguien con conocimientos 
+              previos ponemos a tu disposición herramientas para que puedas organizar tu entrenamiento 
+              de la mejor forma posible.
             </p>
 
             <div className="flex flex-col mt-6 space-y-3 lg:space-y-0 lg:flex-row">
@@ -801,41 +804,6 @@ export default function Home() {
       </div>
       <br />
       <br />
-      <h1 className="font-thin text-2xl text-center">
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={() => {
-            router.push("/sistemaexperto");
-          }}
-        >
-          Crear rutina inteligente
-        </button>
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={() => {
-            router.push("/biblioteca");
-          }}
-        >
-          Ir a Biblioteca de Ejercicios
-        </button>
-        <button
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          onClick={() => {
-            router.push("/rutinas");
-          }}
-        >
-          Crear rutina
-        </button>
-         {/* <button
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            onClick={() => {
-              router.push("/agregarProducto");
-            }}
-          >
-            Agregar producto
-          </button> */}
-      </h1>
-      
       <br />
       <br />
 
