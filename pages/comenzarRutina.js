@@ -6,6 +6,7 @@ import Navbar from "/components/Navbar";
 import Footer from "/components/Footer";
 import supabase from "../config/supabaseClient";
 import CardEjercicioEntrenamiento from "/components/CardEjercicioEntrenamiento";
+import Aviso from "/components/Aviso";
 import Cronometro from "/components/Cronometro";
 
 export default function ComenzarRutina() {
@@ -13,6 +14,9 @@ export default function ComenzarRutina() {
   let rutinaIndex = router.query.rutina;
 
   const [sesion, setSesion] = useState(null);
+  const [mostrarAviso, setMostrarAviso] = useState(false);
+  const [mensajeAviso, setMensajeAviso] = useState('');
+  const [colorAviso, setColorAviso] = useState('red');
   const [rutina, setRutina] = useState(null);
   const [tiempo, setTiempo] = useState(0);
   const [pausaTiempo, setPausaTiempo] = useState(true);
@@ -87,7 +91,6 @@ export default function ComenzarRutina() {
       tipo: ejerciciosRutina[indexEjercicio].rutinas_ejercicio_sets[0].tipo,
       estado: ''
     }
-    console.log(temp.id)
 
     let newState = [...ejerciciosRutina];
     let array = newState[indexEjercicio].rutinas_ejercicio_sets;
@@ -114,7 +117,6 @@ export default function ComenzarRutina() {
     }
 
     updateRutinaEnProgreso()
-    console.log(newState);
   }
 
   async function getEjerciciosRutina() {
@@ -163,8 +165,88 @@ export default function ComenzarRutina() {
       console.log(error)
     }
     else{
-      console.log('Se actualizó la rutina en progreso.')
+      //console.log('Se actualizó la rutina en progreso.')
       //console.log(data)
+    }
+  }
+
+  async function handleFinalizar() {
+    let sets = [];
+    let bounce = false;
+
+    ejerciciosRutina.map((ejercicio, i) => {
+      if (bounce){
+        console.log("bounce2")
+        return 0;
+      }
+      
+      //console.log(i + ': Ejercicio')
+      bounce = false;
+
+      ejercicio.rutinas_ejercicio_sets.map((set, j) => {
+        console.log(' - ' + j + ': Set')
+        console.log(set)
+        
+        if (set.estado == '' || !set.estado) {
+          console.log("bounce1")
+          bounce = true;
+          return 0;
+        }
+
+        if (set.estado != 'cancelado') {
+          sets.push({
+            usuario: sesion.user.id,
+            ejercicio: ejercicio.ejercicio.id,
+            tipo_set: set.tipo,
+            reps: set.reps,
+            peso: set.peso
+          })
+        }
+      });
+    });
+
+    if (bounce){
+      console.log('No has marcado todos tus sets,')
+      setMensajeAviso('No has marcado todos tus sets.');
+      setColorAviso('red');
+      setMostrarAviso(true)
+      return 0;
+    }
+
+    console.log(sets)
+
+    const { data, error } = await supabase
+    .from('progreso_sets')
+    .insert(sets)
+    .select('*')
+
+    if (error) {
+      console.log('ERROR: No se pudo registrar el progreso.')
+      console.log(error)
+    }
+    else{
+      console.log('Se finalizó la rutina y se registró el progreso.')
+      setMensajeAviso('Se guardó tu progreso.');
+      setColorAviso('green');
+      setMostrarAviso(true)
+      //console.log(data)
+      terminarEntrenamiento()
+    }
+  }
+
+  async function terminarEntrenamiento() {
+    const { error } = await supabase
+    .from('rutina_en_progreso')
+    .delete()
+    .match({rutina: rutina.id })
+
+    if (error) {
+      console.log('ERROR: Error al terminar el entrenamiento.')
+      console.log(error)
+    }
+    else{
+      console.log('Se terminó el entrenamiento')
+      router.push('/progreso')
     }
   }
 
@@ -198,6 +280,12 @@ export default function ComenzarRutina() {
       <Navbar />
 
       <main>
+        <Aviso
+          mostrarAviso={mostrarAviso}
+          setMostrarAviso={setMostrarAviso}
+          color={colorAviso}
+          mensaje={mensajeAviso}
+        />
         <br />
         <br />
         <br />
@@ -217,7 +305,7 @@ export default function ComenzarRutina() {
                     <span className="ml-2">{"Volver a Rutinas"}</span>
                   </button>
                   <br/>
-                  <div className="flex flex-row items-center justify-center">
+                  <div className="flex flex-row items-center justify-center sm:mx-16 mt-2">
                     <h2 className="flex-auto text-3xl text-gray-900">{rutina.nombre}</h2>
                     <div className="w-28">
                       <span>Tiempo: </span>
@@ -232,7 +320,7 @@ export default function ComenzarRutina() {
                       ''
                     :
                       !pausaTiempo ? 
-                        <div className="my-12">
+                        <div className="">
                           <div className="flex flex-row my-2">
                             <button 
                             className="bg-white rounded-lg shadow-md my-2 p-4 hover:bg-gray-50 duration-75 active:bg-blue-50 active:p-3.5"
@@ -260,10 +348,11 @@ export default function ComenzarRutina() {
                               pausaTiempo ?
                               'Reanudar Entrenamiento'
                               :
-                              'Pausar Entrenamiento'
+                              'Pausar'
                               }
                             </button>
-                            <button onClick={() => {}} className="flex-auto  btn text-white btn-success rounded-lg btn-md mx-1 my-1 w-full lg:my-0">Finalizar</button>
+                            <button onClick={() => {handleFinalizar()}} className="flex-auto  btn text-white btn-success rounded-lg btn-md mx-1 my-1 w-full lg:my-0">Finalizar</button>
+                            <button onClick={() => {terminarEntrenamiento()}} className="flex-auto  btn text-white btn-error rounded-lg btn-md mx-1 my-1 w-full lg:my-0">Cancelar</button>
                           </div>  
                         </div>
                       :
