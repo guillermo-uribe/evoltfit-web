@@ -74,6 +74,7 @@ export default function Home() {
   }
   //Funcion para retroceder entre componentes 
   function handlePrevious() {
+    setShowButton(false);
     if (value === 6) {
       setCheckboxes2({
         Lunes: false,
@@ -278,15 +279,19 @@ export default function Home() {
         <div className="grid place-items-center">
 
           {value == 2 ? (
-            <div className="bg-gray-100 w-5/6 p-3 rounded-lg seccion2">
+            <div className="bg-gray-100 w-5/6 p-3 rounded-lg seccion2 ">
               <h1>{element}</h1>
             </div>
           ) : value === 4 && arreglo[2] != "principiante" ? (
-            <div className="bg-gray-100 w-5/6 p-3 shadow-lg shadow-zinc-300 seccion3 ">
+            <div className="bg-gray-100 w-5/6 p-3 rounded-lg seccion3">
               <h1>{element}</h1>
             </div>
+          ) : value === -1 ? (
+            <div className="w-9/12 seccionInicial">
+                {element}
+            </div>
           ) : (
-            <div className="w-9/12 p-3 rounded-lg bg-white seccion ">
+            <div className="w-9/12 p-3 rounded-lg bg-white seccion">
               <h1>{element}</h1>
             </div>
           )}
@@ -325,13 +330,10 @@ export default function Home() {
     </div>
   </>
 ) : (
-  <button className="bottonSig-2" onClick={handleNext} >Comenzar</button>
+  <button className="bottonSig-2  lg:mt-12 xl:mt-0" onClick={handleNext} >Comenzar</button>
 )}
 
-
-          
         </div>
-        <br />
         <br />
         <br />
       </main>
