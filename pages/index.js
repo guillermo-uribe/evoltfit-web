@@ -50,15 +50,20 @@ export default function Home() {
               // getFullYear() Regresa el año actual
               var year_Actual = today.getFullYear();
 
-              var fecha_Actual = `${year_Actual}-${"0" + month_Actual}-${"0" + day_Actual}`
+              var fecha_Actual = `${year_Actual}-${"0" + month_Actual}-${
+                "0" + day_Actual
+              }`;
 
               console.log("Fecha de hoy: " + fecha_Actual);
 
-              if ((fecha_Actual == sus_pagos[0].fecha_termino) || (sus_pagos[0].fecha_termino < fecha_Actual)) {
+              if (
+                fecha_Actual == sus_pagos[0].fecha_termino ||
+                sus_pagos[0].fecha_termino < fecha_Actual
+              ) {
                 console.log("Ya se acabó el plan");
                 let { data, error } = await supabase
                   .from("sus_pagos")
-                  .update({ activo: 0})
+                  .update({ activo: 0 })
                   .eq("id_usuario", sesion.user.id);
 
                 if (error) {
@@ -109,7 +114,7 @@ export default function Home() {
         <br />
         <br />
 
-        <div className="xl:grid xl:grid-cols-2 xl:gap-2xl:h-full xl:ml-11 xl:mr-11 xl: p-5">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 lg:gap-2xl lg:h-full lg:ml-11 lg:mr-11 lg:p-5">
           <div className="border-blue-600 border-2 w-12/12 mt-6 mb-6 rounded-md shadow-2xl">
             <div className="grid place-items-center p-10">
               <h1 className="text-center text-2xl text-black xl:text-3xl font-semibold">
@@ -776,11 +781,12 @@ export default function Home() {
             </h2>
 
             <p className="mt-4 text-sm text-gray-500 lg:text-base">
-              EvoltFit esta preparado para ayudar a todo tipo de usuarios. Si eres 
-              principiante te proporcionamos la guía perfecta para obtener la mejor rutina para ti
-              y así aprendas lo que le funciona a tu cuerpo; en cambio si eres alguien con conocimientos 
-              previos ponemos a tu disposición herramientas para que puedas organizar tu entrenamiento 
-              de la mejor forma posible.
+              EvoltFit esta preparado para ayudar a todo tipo de usuarios. Si
+              eres principiante te proporcionamos la guía perfecta para obtener
+              la mejor rutina para ti y así aprendas lo que le funciona a tu
+              cuerpo; en cambio si eres alguien con conocimientos previos
+              ponemos a tu disposición herramientas para que puedas organizar tu
+              entrenamiento de la mejor forma posible.
             </p>
 
             <div className="flex flex-col mt-6 space-y-3 lg:space-y-0 lg:flex-row">
@@ -802,6 +808,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      <br></br>
+
       <br />
       <br />
       <br />
