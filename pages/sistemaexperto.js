@@ -54,12 +54,42 @@ export default function Home() {
   useEffect(() => {
     localStorage.removeItem("NombrePaquete");
     localStorage.removeItem("Meses");
-  }, [])
+  }, []);
 
+  //ELIMINAR DESPUES
+  function llenarrapido() {
+    setCheckboxes2({
+      Lunes: true,
+      Martes: true,
+      Miercoles: true,
+      Jueves: false,
+      Viernes: false,
+      Sabado: false,
+      Domingo: false,
+    });
+    setCheckboxes({
+      Ninguno: true,
+      Bandaresistencia: false,
+      Bandasuspension: false,
+      Barra: true,
+      BarraZ: false,
+      Barras: false,
+      Mancuernas: true,
+      PesaRusa: false,
+      PlacaPeso: false,
+      MaquinasGYM: false,
+      BancoPlano: true,
+      BancoDeclinado: false,
+      BancoInclinado: false,
+      Cuerda: false,
+    });
+    setArreglo(['hombre', 'masamuscular', 'principiante', '30min', 'superior']);
+
+  }
   //Funcion para cambiar entre componentes a su vez agrega el contenido del objeto a un arreglo
   //y pone el boton sin funcion para que el usuario tenga que ingresar los datos
   function handleNext() {
-    if(value===-1){
+    if (value === -1) {
       setinicioB(true);
     }
     if (value < 5 && value >= 0) {
@@ -72,7 +102,7 @@ export default function Home() {
     setValue(value + 1);
     setShowButton(false);
   }
-  //Funcion para retroceder entre componentes 
+  //Funcion para retroceder entre componentes
   function handlePrevious() {
     setShowButton(false);
     if (value === 6) {
@@ -85,10 +115,8 @@ export default function Home() {
         Sabado: false,
         Domingo: false,
       });
-
     }
     if (value > 0 && value <= 5) {
-
       setValue(value - 1);
       arreglo.pop();
       setArreglo(arreglo);
@@ -107,8 +135,6 @@ export default function Home() {
         Sabado: false,
         Domingo: false,
       });
-
-
     } else {
       if (value > 0) {
         setValue(value - 1);
@@ -131,9 +157,7 @@ export default function Home() {
           BancoInclinado: false,
           Cuerda: false,
         });
-
       }
-
     }
   }
   //funcion que recibe solo un valor por componente
@@ -166,7 +190,6 @@ export default function Home() {
       ...checkboxes2,
       [name]: checked,
     });
-
   };
   //Funcion para las herramientas
   const handleCheckboxChange = (event) => {
@@ -190,7 +213,7 @@ export default function Home() {
       });
     } else if (name === "Todos") {
       setCheckboxes({
-        Ninguno: false,
+        Ninguno: true,
         Bandaresistencia: true,
         Bandasuspension: true,
         Barra: true,
@@ -209,7 +232,7 @@ export default function Home() {
       setCheckboxes({
         ...checkboxes,
         [name]: checked,
-        Ninguno: false,
+        Ninguno: true,
       });
     }
   };
@@ -218,7 +241,7 @@ export default function Home() {
     element = <Inicio />;
   } else if (value === 0) {
     element = <Seccion1 onChange={handleChange} />;
-  }else if (value === 1) {
+  } else if (value === 1) {
     element = <Seccion2 onChange={handleChange} />;
   } else if (value === 2) {
     element = <Seccion3 onChange={handleChange} />;
@@ -260,11 +283,13 @@ export default function Home() {
     if (Object.entries(checkboxes2).find((entry) => entry[1] === true)) {
       setShowButton(true);
     }
-    if (Object.values(checkboxes2).every(value => value === false) && value === 5) {
+    if (
+      Object.values(checkboxes2).every((value) => value === false) &&
+      value === 5
+    ) {
       setShowButton(false);
     }
   }, [formData, formData2, arreglo, checkboxes, checkboxes2]);
-
 
   return (
     <div className="bg-gradient-to-tl from-blue-200 to-blue-300 w-full">
@@ -277,62 +302,109 @@ export default function Home() {
 
       <main>
         <div className="grid place-items-center">
-
-          {value == 2 ? (
-            <div className="bg-gray-100 w-5/6 p-3 rounded-lg seccion2 ">
-              <h1>{element}</h1>
+          {value === -1 ? (
+            <div className="w-9/12 seccInic">{element}
+            </div>
+          ) : value === 0 ? (
+            <div className="w-9/12 bg-gray-100 p-3 rounded-lg secc0">{element}
+            </div>
+          ) : value === 1 ? (
+            <div className="w-9/12 bg-gray-100 p-3 rounded-lg secc1">{element}
+            </div>
+          ) : value == 2 ? (
+            <div className="bg-gray-100 w-5/6 p-3 rounded-lg secc2">{element}
+            </div>
+          ) : value === 3 ? (
+            <div className="w-9/12 bg-gray-100 p-3 rounded-lg secc3">{element}
             </div>
           ) : value === 4 && arreglo[2] != "principiante" ? (
-            <div className="bg-gray-100 w-5/6 p-3 rounded-lg seccion3">
-              <h1>{element}</h1>
+            <div className="bg-gray-100 w-5/6 p-3 rounded-lg secc4">{element}
             </div>
-          ) : value === -1 ? (
-            <div className="w-9/12 seccionInicial">
-                {element}
+          ) : value === 5 ? (
+            <div className="w-9/12 bg-gray-100 p-3 rounded-lg secc5">{element}
+            </div>
+          ) : value === 6 ? (
+            <div className="w-9/12 bg-gray-100 p-3 rounded-lg secc6">{element}
+            </div>
+          ) : value === 7 ? (
+            <div className="w-9/12 bg-gray-100 p-3 rounded-lg secc7">{element}
             </div>
           ) : (
-            <div className="w-9/12 p-3 rounded-lg bg-white seccion">
-              <h1>{element}</h1>
+            <div className="">
             </div>
           )}
 
+
           <br />
           {/*Boton retroceder*/}
-          
-          {inicioB ? (
-  <><div className="grid grid-cols-2 gap-10">
-    <button className="bottonAnt" onClick={handlePrevious}>Anterior</button>
-    {showFinalizar ? (
-      showFinalizar2 ? (
-        <Link
-          href={{
-            pathname: "../rutinaSE",
-            query: {
-              formData2: JSON.stringify(formData2),
-              checkboxes: JSON.stringify(checkboxes),
-              checkboxes2: JSON.stringify(checkboxes2),
-              arreglo: JSON.stringify(arreglo),
-            },
-          }}
-        >
-          <button className="bottonSig-2">Finalizar</button>
-        </Link>
-      ) : (
-        <button className="bottonSig-1">Finalizar</button>
-      )
-    ) : showButton ? (
-      <button onClick={handleNext} className="bottonSig-2">
-        Siguiente
-      </button>
-    ) : (
-      <button className="bottonSig-1">Siguiente</button>
-    )}
-    </div>
-  </>
-) : (
-  <button className="bottonSig-2  lg:mt-12 xl:mt-0" onClick={handleNext} >Comenzar</button>
-)}
 
+          {inicioB ? (
+            <>
+              <div className="grid grid-cols-2 gap-10">
+                <button className="bottonAnt" onClick={handlePrevious}>
+                  Anterior
+                </button>
+                {showFinalizar ? (
+                  showFinalizar2 ? (
+                    <Link
+                      href={{
+                        pathname: "../rutinaSE",
+                        query: {
+                          formData2: JSON.stringify(formData2),
+                          checkboxes: JSON.stringify(checkboxes),
+                          checkboxes2: JSON.stringify(checkboxes2),
+                          arreglo: JSON.stringify(arreglo),
+                        },
+                      }}
+                    >
+                      <button className="bottonSig-2">Finalizar</button>
+                    </Link>
+                  ) : (
+                    <button className="bottonSig-1">Finalizar</button>
+                  )
+                ) : showButton ? (
+                  <button onClick={handleNext} className="bottonSig-2">
+                    Siguiente
+                  </button>
+                ) : (
+                  <button className="bottonSig-1">Siguiente</button>
+                )}
+              </div>
+            </>
+          ) : (
+            <div>
+              <button
+                className="bottonSig-2 resp-botonComenzar"
+                onClick={handleNext}
+                style={{ display: "inline-block", marginRight: "10px" }}
+              >
+                Comenzar
+              </button>
+              <Link
+                href={{
+                  pathname: "../rutinaSE",
+                  query: {
+                    formData2: JSON.stringify(formData2),
+                    checkboxes: JSON.stringify(checkboxes),
+                    checkboxes2: JSON.stringify(checkboxes2),
+                    arreglo: JSON.stringify(arreglo),
+                  },
+                }}
+                style={{ display: "inline-block", marginRight: "10px" }}
+              >
+                <button className="bottonSig-2" style={{ display: "inline-block" }}>
+                  TEST
+                </button>
+              </Link>
+              <button
+                className="bottonSig-2"
+                onClick={llenarrapido}
+                style={{ display: "inline-block", marginRight: "10px" }}
+              >
+                LLENAR PRIMERO
+              </button>
+            </div>
+          )}
         </div>
         <br />
         <br />
