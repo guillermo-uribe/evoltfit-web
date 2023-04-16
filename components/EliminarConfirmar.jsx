@@ -10,6 +10,16 @@ import Link from 'next/link'
 const EliminarConfirmar = ({ mostrarEliminar, setMostrarEliminar, mensaje, funcEliminar }) => {
     let aviso = mensaje || '¿Estás seguro?'
     
+    useEffect(() => {
+        if (mostrarEliminar){
+            document.getElementById(mensaje).scrollIntoView({
+                behavior: 'auto',
+                block: 'center',
+                inline: 'center'
+            });
+        }
+    }, [mostrarEliminar])
+
     return (
         <div className={
             "absolute w-full h-full bg-inherit flex items-center left-0 top-0 z-10 justify-center duration-200 backdrop-blur" 
@@ -20,8 +30,8 @@ const EliminarConfirmar = ({ mostrarEliminar, setMostrarEliminar, mensaje, funcE
             ' visible opacity-100')
             }
             data-theme="emerald">
-            <div id='confirmarEliminar' className='bg-white rounded-lg p-10 shadow-xl'>
-                <p className="text-xl font-semibold mb-4">
+            <div id={mensaje} className='w-11/12 sm:w-fit bg-white rounded-lg p-10 shadow-xl'>
+                <p className="text-xl font-semibold mb-4 text-center">
                     {mensaje}
                 </p>
                 <div className='flex flex-row items-center justify-center space-x-6 mt-4'>

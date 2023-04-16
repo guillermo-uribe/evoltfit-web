@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect, useCallback } from "react";
 import supabase from "/config/supabaseClient";
 
-const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
+const SeleccionarEjercicio = ({ toggleSeleccionar, agregarEjercicio, setToggleSeleccionar }) => {
   
   const router = useRouter();
   let musculoIndex = router.query.name;
@@ -19,9 +19,18 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
   const [equipo, setEquipo] = useState(["Ninguno","Banda de resistencia","Banda de suspension","Barra","Barra Z","Barras (dominadas, paralelas)","Mancuerna","Mancuernas","Pesa rusa","Placa de peso","Maquinas en GYM","Banco plano","Banco declinado","Banco inclinado","Cuerda"]);
   
   useEffect(() => {
-    //console.log("useEffect")
+    console.log("seleccionarEjercicios")
     getEjercicios();
-  }, [formInput, paginacion]);
+    
+    if (toggleSeleccionar){
+      document.getElementById('SeleccionarEjercicio').scrollIntoView({
+          behavior: 'auto',
+          block: 'center',
+          inline: 'center'
+      });
+      console.log('miRAME')
+  }
+  }, [formInput, paginacion, toggleSeleccionar]);
 
   const handleOnInputChange = useCallback(
     (event) => {
@@ -37,7 +46,12 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
         var temp = equipo;
         
         if (checked == true){
-          temp.push(value);
+          if (temp[0] == 'Ninguno') {
+            temp = [value]
+          }
+          else{
+            temp.push(value);
+          }
         }
         
         if (checked == false){
@@ -45,6 +59,10 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
           if (indice > -1) {
             temp.splice(indice, 1);
           }
+        }
+
+        if (temp.length === 0){
+          temp.push("Ninguno");
         }
         
         setEquipo(temp);
@@ -90,12 +108,12 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
     if (filtrarMusculo)  { query = query.eq('musculo_primario', filtrarMusculo) }
     //if (filtrarMusculo) { console.log("Filtro musculo: " + filtrarMusculo)}
 
-    if (filtrarEquipo)  { query = query.overlaps('equipo', filtrarEquipo) }
+    if (filtrarEquipo)  { query = query.containedBy('equipo', filtrarEquipo) }
     //if (filtrarEquipo) { console.log("Filtro equipo: " + filtrarEquipo)}
 
     if (filtrarSearch) { query = query.ilike('nombre', filtrarSearch) }
     //if (filtrarSearch) { console.log("Filtro search: " + filtrarSearch) }
-    
+
     query = query.order('id', { ascending: false })
     const data = await query
 
@@ -109,7 +127,7 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
     .select('id', { count: 'exact', head: true })
 
     if (filtrarMusculo)  { query = query.eq('musculo_primario', filtrarMusculo) }
-    if (filtrarEquipo)  { query = query.overlaps('equipo', filtrarEquipo) }
+    if (filtrarEquipo)  { query = query.containedBy('equipo', filtrarEquipo) }
     if (filtrarSearch) { query = query.ilike('nombre', filtrarSearch) }
 
     const count = await query
@@ -137,24 +155,29 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
   }
 
   return (
-    <div className="absolute top-32 left-1/2 transform -translate-x-1/2 overflow-auto max-h-full h-5/6 shadow-lg rounded-2xl pt-12 w-11/12 sm:w-9/12 mx-auto max-w-5xl" data-theme="emerald"> 
-        <div className="relative w-11/12 sm:w-9/12 mx-auto max-w-5xl">
-          <div className='flex justify-end sticky top-0 z-20 px-2 h-0'>
-            <button onClick={() => {setToggleSeleccionar(false)}} className="btn btn-lg btn-ghost text-5xl bg-white rounded-lg shadow-md p-2">
+    <div className={"absolute w-full h-full overflow-y-scroll bg-stone-100 flex items-center left-0 top-0 z-10 justify-center duration-200 pt-6"
+    +
+    (!toggleSeleccionar ? 
+    ' invisible opacity-0'
+    :
+    ' visible opacity-100')
+    }>
+      <div className="h-full w-11/12 md:w-9/12 mx-auto max-w-5xl">
+          <div className='flex fixed justify-end top-24 mt-2 right-4 md:right-36 md:mr-1 z-20'>
+            <button onClick={() => {setToggleSeleccionar(false)}} className="btn btn-lg btn-ghost text-5xl bg-white rounded-lg shadow-md p-2 mt-2">
                   <ion-icon name='close-outline'></ion-icon>
             </button>
           </div>
-          <div className="w-full">
-            <h2 className="text-3xl text-left text-secondary font-semibold w-9/12">Selecciona un ejercicio</h2>
+          <div>
+            <h2 id='SeleccionarEjercicio'  className="text-2xl mt-6 lg:text-5xl text-left text-secondary font-semibold lg:my-4">Seleccionar Ejercicio</h2>
             <br/>
-
             <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only">Buscar</label>
             <div className="relative flex flex-row">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <svg aria-hidden="true" className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <svg aria-hidden="true" className="w-3 h-3  lg:w-5 lg:h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
               </div>
-              <input name="search" id="search" onBlur={getEjercicios} className="input input-secondary border-0 block w-full pl-8 rounded-xl shadow-md" value={formInput.search || ""} onChange={handleOnInputChange} placeholder="Buscar ejercicio..."/>
-              <button type="submit" onClick={getEjercicios} className="btn text-white absolute right-2 my-2 btn-secondary rounded-lg btn-sm ">BUSCAR</button>
+              <input name="search" id="search" onBlur={getEjercicios} className="input input-secondary border-0 block w-full pl-8 lg:p-8 lg:pl-11 text-sm lg:text-lg rounded-xl shadow-md" value={formInput.search || ""} onChange={handleOnInputChange} placeholder="Buscar ejercicio..."/>
+              <button type="submit" onClick={getEjercicios} className="btn text-white absolute right-2 lg:right-3 lg:bottom-2 btn-secondary rounded-lg btn-sm lg:btn-md top-2 lg:px-6 lg:py-2">BUSCAR</button>
             </div>
 
             <br/>
@@ -162,7 +185,7 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
             
             {/* SELECT GRUPO MUSCULAR */}
             <div className="form-control mt-4 mb-4">
-              <select name="musculo" id="musculo" onChange={handleOnInputChange} className="select select-secondary h-full border-0 font-normal rounded-xl shadow-md" defaultValue={formInput.musculo}>
+              <select name="musculo" id="musculo" onChange={handleOnInputChange} className="select select-secondary lg:text-xl lg:py-4 h-full border-0 font-normal rounded-xl shadow-md" defaultValue={formInput.musculo}>
                 <option id="Todos" value="Todos" hidden>Grupo Muscular</option>
                 <option id="Todos" value="Todos">Todos</option>
                 <option id="Abdomen" value="Abdomen">Abdomen</option>
@@ -183,18 +206,18 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
               </select>
             </div>
 
-            <div className="collapse collapse-arrow bg-base-100 rounded-xl shadow-md text-sm">
+            <div className="collapse collapse-arrow bg-base-100 rounded-xl shadow-md text-sm lg:text-xl">
                 <input type="checkbox" className="peer"/> 
-                <div className="collapse-title text-secondary">
+                <div className="collapse-title text-secondary peer-checked:h-0">
                   Equipo
                 </div>
-              <div className="collapse-content"> 
+              <div className="collapse-content  lg:px-10"> 
               <div className="divider m-0"></div>
 
                 {/* CHECKBOX TOGGLE EQUIPO */}
                 <div className="flex flex-row flex-wrap form-control">
-                  <div className="w-full">
-                    <label className="cursor-pointer label">
+                  <div className="w-full lg:w-1/3 lg:m-auto">
+                  <label className="cursor-pointer label">
                       <span className="label-text mx-4">Ninguno</span> 
                       <input type="checkbox" checked={formInput.equipo ? incluye(formInput.equipo, "Ninguno") : true} className="toggle toggle-secondary" value="Ninguno" id="equipo" name="equipo" onChange={handleOnInputChange} />
                     </label>
@@ -224,7 +247,7 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
                     </label>
                   </div>
 
-                  <div className="w-full">
+                  <div className="w-full lg:w-1/3 lg:m-auto">
                     <label className="cursor-pointer label">
                       <span className="label-text mx-4">Pesa rusa</span> 
                       <input type="checkbox" checked={formInput.equipo ? incluye(formInput.equipo, "Pesa rusa") : true} className="toggle toggle-secondary" value="Pesa rusa" id="equipo" name="equipo" onChange={handleOnInputChange} />
@@ -256,8 +279,8 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
                   </div>
                 </div>
 
-                <div className="flex flex-col items-center mb-3 mt-5">
-                  <div className="flex flex-row flex-wrap items-center">
+                <div className="flex flex-row my-4">
+                  <div className="flex items-center justify-center w-6/12">
                     <button
                     onClick={() => {
                       var temp = ["Ninguno","Banda de resistencia","Banda de suspension","Barra","Barra Z","Barras (dominadas, paralelas)","Mancuerna","Mancuernas","Pesa rusa","Placa de peso","Maquinas en GYM","Banco plano","Banco declinado","Banco inclinado","Cuerda"]
@@ -267,26 +290,22 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
                         musculo: formInput.musculo,
                         search: formInput.search
                       })}} 
-                      className="btn btn-secondary w-3/4 mx-auto mt-2">Activar todos
+                      className="btn btn-secondary w-11/12">Activar todos
                     </button>
+                  </div>
+                  <div className="flex items-center justify-center w-6/12">
                     <button
                     onClick={() => {
-                      var temp = []
+                      var temp = ["Ninguno"]
                       setEquipo(temp);
                       setFormInput({
                         equipo: temp,
                         musculo: formInput.musculo,
                         search: formInput.search
                       })}} 
-                      className="btn mt-4 w-3/4 mx-auto mb-2">Desactivar todos
+                      className="btn w-11/12 ">Desactivar todos
                     </button>
                   </div>
-                </div>
-
-                <div className="divider m-0"></div>
-
-                <div className="flex flex-col items-center mb-3 mt-5">
-                  <button type="submit" onClick={getEjercicios} className="btn btn-lg btn-secondary px-6 w-3/4">FILTRAR</button>
                 </div>
               </div>
             </div>
@@ -300,13 +319,13 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
                 {/* PAGINACIÓN */}
                 <div className="flex flex-col my-auto w-3/4 items-end">
                   <div className="btn-group">
-                    {(paginacion == 1) ? "" : <button className="btn btn-xs btn-outline btn-secondary" onClick={() => {setPaginacion(paginacion - 1)}}>«</button>}
-                    {((paginacion - 2) <= 0) ? "" : <button className="btn btn-outline btn-secondary btn-xs first-letter:btn-xs" onClick={() => {setPaginacion(paginacion - 2)}}>{paginacion - 2}</button>}
-                    {((paginacion - 1) <= 0) ? "" : <button className="btn btn-outline btn-secondary btn-xs" onClick={() => {setPaginacion(paginacion - 1)}}>{paginacion - 1}</button>}
-                    <button className="btn btn-xs btn-secondary">{paginacion}</button>
-                    {(cantidad > (paginacion * 10))? <button className="btn btn-outline btn-secondary btn-xs" onClick={() => {setPaginacion(paginacion + 1)}}>{paginacion + 1}</button> : ""}
-                    {(cantidad > ((paginacion+1) * 10))? <button className="btn btn-outline btn-secondary btn-xs" onClick={() => {setPaginacion(paginacion + 2)}}>{paginacion + 2}</button> : ""}
-                    {(paginacion >= (cantidad/10))? "" : <button className="btn btn-outline btn-secondary btn-xs" onClick={() => {setPaginacion(paginacion + 1)}}>»</button>}
+                    {(paginacion == 1) ? "" : <button className="btn btn-xs btn-outline btn-secondary lg:btn-sm" onClick={() => {setPaginacion(paginacion - 1)}}>«</button>}
+                    {((paginacion - 2) <= 0) ? "" : <button className="btn btn-outline btn-secondary btn-xs first-letter:btn-xs lg:btn-sm" onClick={() => {setPaginacion(paginacion - 2)}}>{paginacion - 2}</button>}
+                    {((paginacion - 1) <= 0) ? "" : <button className="btn btn-outline btn-secondary btn-xs lg:btn-sm" onClick={() => {setPaginacion(paginacion - 1)}}>{paginacion - 1}</button>}
+                    <button className="btn btn-xs lg:btn-sm btn-secondary">{paginacion}</button>
+                    {(cantidad > (paginacion * 10))? <button className="btn btn-outline btn-secondary btn-xs lg:btn-sm" onClick={() => {setPaginacion(paginacion + 1)}}>{paginacion + 1}</button> : ""}
+                    {(cantidad > ((paginacion+1) * 10))? <button className="btn btn-outline btn-secondary btn-xs lg:btn-sm" onClick={() => {setPaginacion(paginacion + 2)}}>{paginacion + 2}</button> : ""}
+                    {(paginacion >= (cantidad/10))? "" : <button className="btn btn-outline btn-secondary btn-xs lg:btn-sm" onClick={() => {setPaginacion(paginacion + 1)}}>»</button>}
                   </div>
                 </div>
               </div>
@@ -363,23 +382,26 @@ const SeleccionarEjercicio = ({ agregarEjercicio, setToggleSeleccionar }) => {
               {/* PAGINACIÓN */}
               <div className="flex flex-col items-center mb-2 mt-4">
                 <div className="btn-group">
-                  {(paginacion == 1) ? "" : <button className="btn btn-outline btn-secondary text-xl" onClick={() => {setPaginacion(paginacion - 1)}}>«</button>}
-                  {((paginacion - 2) <= 0) ? "" : <button className="btn btn-outline btn-secondary" onClick={() => {setPaginacion(paginacion - 2)}}>{paginacion - 2}</button>}
-                  {((paginacion - 1) <= 0) ? "" : <button className="btn btn-outline btn-secondary" onClick={() => {setPaginacion(paginacion - 1)}}>{paginacion - 1}</button>}
-                  <button className="btn btn-secondary">{paginacion}</button>
-                  {(cantidad > (paginacion * 10))? <button className="btn btn-outline btn-secondary" onClick={() => {setPaginacion(paginacion + 1)}}>{paginacion + 1}</button> : ""}
-                  {(cantidad > ((paginacion+1) * 10))? <button className="btn btn-outline btn-secondary" onClick={() => {setPaginacion(paginacion + 2)}}>{paginacion + 2}</button> : ""}
-                  {(paginacion >= (cantidad/10))? "" : <button className="btn btn-outline btn-secondary text-xl" onClick={() => {setPaginacion(paginacion + 1)}}>»</button>}
+                  {(paginacion == 1) ? "" : <button className="btn btn-outline btn-secondary text-xl lg:btn-lg" onClick={() => {setPaginacion(paginacion - 1); window.scrollTo(0, 0)}}>«</button>}
+                  {((paginacion - 2) <= 0) ? "" : <button className="btn btn-outline btn-secondary lg:btn-lg" onClick={() => {setPaginacion(paginacion - 2); window.scrollTo(0, 0)}}>{paginacion - 2}</button>}
+                  {((paginacion - 1) <= 0) ? "" : <button className="btn btn-outline btn-secondary lg:btn-lg" onClick={() => {setPaginacion(paginacion - 1); window.scrollTo(0, 0)}}>{paginacion - 1}</button>}
+                  <button className="btn lg:btn-lg btn-secondary">{paginacion}</button>
+                  {(cantidad > (paginacion * 10))? <button className="btn btn-outline btn-secondary lg:btn-lg" onClick={() => {setPaginacion(paginacion + 1); window.scrollTo(0, 0)}}>{paginacion + 1}</button> : ""}
+                  {(cantidad > ((paginacion+1) * 10))? <button className="btn btn-outline btn-secondary lg:btn-lg" onClick={() => {setPaginacion(paginacion + 2); window.scrollTo(0, 0);}}>{paginacion + 2}</button> : ""}
+                  {(paginacion >= (cantidad/10))? "" : <button className="btn btn-outline btn-secondary text-xl lg:btn-lg" onClick={() => {setPaginacion(paginacion + 1); window.scrollTo(0, 0);}}>»</button>}
                 </div>
               </div>
+              <br/>
             </div> 
             : 
             <div className="mt-12">
               <div className="loader mt-6"></div>
             </div>
           }
+          {/* <div className="flex flex-col items-center">
+            <button className="btn btn-outline rounded-full btn-secondary btn-lg w-1/2 m-8" onClick={() => {router.push("/agregarEjercicio")}}>Agregar Ejercicio</button>
+          </div> */}
         </div>
-        <br />
     </div>
   );
 }
