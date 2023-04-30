@@ -65,7 +65,7 @@ function arriba()  {
 
   useEffect(() => {
     handleSesion();
-    localStorage.setItem("bandera", "false");
+    localStorage.setItem("bandera", 'false');
     localStorage.removeItem("NombrePaquete");
     localStorage.removeItem("Meses");
   }, []);
@@ -78,14 +78,14 @@ function arriba()  {
       Miercoles: true,
       Jueves: true,
       Viernes: true,
-      Sabado: true,
+      Sabado: false,
       Domingo: false,
     });
     setCheckboxes({
       Ninguno: true,
       Bandaresistencia: false,
       Bandasuspension: false,
-      Barra: false,
+      Barra: true,
       BarraZ: false,
       Barras: false,
       Mancuernas: true,
@@ -97,7 +97,7 @@ function arriba()  {
       BancoInclinado: false,
       Cuerda: false,
     });
-    setArreglo(["hombre", "resistencia", "principiante", "1hr 30", "superior"]);
+    setArreglo(["hombre", "masamuscular", "experimentado", "2hr", "superior"]);
   }
 
   const handleSesion = async () => {

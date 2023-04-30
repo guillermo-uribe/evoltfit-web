@@ -15,6 +15,8 @@ export default function Home() {
     handleSesion();
     localStorage.removeItem("NombrePaquete");
     localStorage.removeItem("Meses");
+    console.log("Bandera")
+    console.log(localStorage.getItem('bandera'));
   }, []);
   const handleSesion = async () => {
     const { data, error } = await supabase.auth.getSession();
@@ -55,6 +57,7 @@ export default function Home() {
   if (arreglo) {
     opciones = JSON.parse(arreglo);
   }
+ 
   // <--------------------- >
   // <--------------------- >
   // <----- Variables ----- >
@@ -245,6 +248,7 @@ export default function Home() {
     if (error) {
       console.log(error);
     } else {
+      console.log(data)
       setData(data);
     }
   };
@@ -697,6 +701,9 @@ export default function Home() {
           }
         }
       }
+      if(diasActivos===5 || diasActivos===4){
+        similares = [];
+      }
     }
     if (diasActivos >= 6 && (opciones[4] === 'superior' || opciones[4] === 'brazos')) {
       //Que arreglos son iguales
@@ -941,9 +948,11 @@ export default function Home() {
   //Use Effect para cargar y asignar los ejercicios
   useEffect(() => {
     if (data.every(posicion => posicion.length === 0)) {
+      console.log("Llama a funcion Cargar Ejercicios")
       cargar_ejercicios();
     } else {
       if (localStorage.getItem('bandera') !== 'true') {
+        console.log("Llama funcion Cambiar Ejercicios")
         cambiar_ejercicios();
       }
     }
