@@ -947,13 +947,10 @@ export default function Home() {
     };
   }, []);
 
-  //Use Effect para cargar y asignar los ejercicios
-  useEffect(() => {
+  
+  cargar_ejercicios();
     
-      cargar_ejercicios();
-    
-    //console.log(localStorage.getItem('bandera'));
-  }, [data]);
+  
 
 
   return (
