@@ -65,6 +65,7 @@ function arriba()  {
 
   useEffect(() => {
     handleSesion();
+    localStorage.setItem('bandera2', 'true');
     localStorage.setItem("bandera", 'false');
     localStorage.removeItem("NombrePaquete");
     localStorage.removeItem("Meses");
@@ -78,7 +79,7 @@ function arriba()  {
       Miercoles: true,
       Jueves: true,
       Viernes: true,
-      Sabado: false,
+      Sabado: true,
       Domingo: false,
     });
     setCheckboxes({
@@ -97,7 +98,7 @@ function arriba()  {
       BancoInclinado: false,
       Cuerda: false,
     });
-    setArreglo(["hombre", "masamuscular", "experimentado", "2hr", "superior"]);
+    setArreglo(["hombre", "masamuscular", "experimentado", "2hr", "brazos"]);
   }
 
   const handleSesion = async () => {

@@ -11,12 +11,13 @@ export default function Home() {
   const [sesion, setSesion] = useState(null);
   const [flag, setFlag] = useState(false);
   const [resultado, setResultado] = useState(null);
-
+  const [usosSe,setUsosSe]=useState("");
   useEffect(() => {
     handleSesion();
     localStorage.removeItem("NombrePaquete");
     localStorage.removeItem("Meses");
     localStorage.setItem('bandera', 'false');
+    localStorage.setItem('bandera2', 'true');
     if (flag == true) {
       if (sesion) {
         async function checkPlanStatus() {
@@ -93,6 +94,26 @@ export default function Home() {
     if (data.session) {
       setSesion(data.session);
       //console.log(data);
+      const data8 = await supabase
+      .from('perfiles')
+      .select("se")
+      .eq('id', data.session.user.id)
+
+      let { data: pagos, err } = await supabase
+      .from("sus_pagos")
+      .select("activo")
+      .eq("id_usuario", data.session.user.id);
+    if (pagos.length === 0) {
+      console.log("Este usuario no tiene plan");
+      if (data8.data[0].se === 1) {
+        setUsosSe("1");
+        }else if(data8.data[0].se === 0){
+        setUsosSe("0");
+        }
+    }else{
+      setUsosSe("Ilimitados");
+    }
+    
     } else {
       setSesion(null);
       //console.log("No hay Sesión " + error);
@@ -131,9 +152,10 @@ export default function Home() {
                 O también...
               </span>
               <span className="inline-block w-44 xl:w-60 h-1 bg-blue-500 rounded-full mt-3"></span>
-              <h2 className="mt-5 text-xl text-black text-center xl:pl-20 xl:pr-20">
+              <h2 className="mt-5 text-xl text-black text-center xl:pl-20 xl:pr-20"> 
                 Puedes dejarnos todo el trabajo a nosotros y crearemos la mejor
-                rutina para ti.
+                rutina para ti.<br/><br/>
+              Usos: <p style={{ color: usosSe === "Ilimitados" ? "green" : "black" }}>{usosSe}</p>
               </h2>
               <div className="flex flex-col mt-6 space-y-3 lg:space-y-0 lg:flex-row">
                 <Link href="/sistemaexperto">

@@ -248,7 +248,7 @@ export default function ComenzarRutina() {
     }
     else{
       console.log('Se terminó el entrenamiento')
-      router.push('/progreso')
+      router.push('/visualizadorProgreso')
     }
   }
 
@@ -307,14 +307,16 @@ export default function ComenzarRutina() {
               <div className="flex flex-col w-11/12 md:w-9/12 mx-auto max-w-5xl">
                 <div>
                   <button className="btn btn-ghost m-0 px-2 text-lg" onClick={() => {router.push('/rutinas')}}>
-                    <div className='text-3xl mt-auto'>
+                    <div className='text-2xl mt-1'>
                       <ion-icon name="arrow-back-outline"></ion-icon>
                     </div>
                     <span className="ml-2">{"Volver a Rutinas"}</span>
                   </button>
                   <br/>
-                  <div className="flex flex-row items-center justify-center sm:mx-16 mt-2">
-                    <h2 id="nombreRutina" className="flex-auto text-3xl text-gray-900 mr-2 truncate">{rutina.nombre}</h2>
+                  <div className="flex flex-row items-end justify-center sm:mx-16 mt-2">
+                    <h2 id="nombreRutina" className="flex-auto text-3xl text-gray-900 mr-2 truncate">
+                      {rutina.nombre}
+                    </h2>
                     <div className="w-28">
                       <span>Tiempo: </span>
                       <Cronometro
@@ -365,7 +367,7 @@ export default function ComenzarRutina() {
                             </button>
                           </div>
                           <div className='flex flex-col justify-center items-center lg:flex-row w-full'>
-                            <div className='flex flex-row justify-center items-center w-full inline lg:hidden mb-2'>
+                            <div className='flex flex-row justify-center items-center w-full lg:hidden mb-2'>
                               <button 
                                 className="bg-white w-full mr-1 text-2xl rounded-lg shadow p-4 hover:bg-gray-50 duration-75 active:scale-95"
                                 onClick={() => {
@@ -391,7 +393,7 @@ export default function ComenzarRutina() {
                                 inline: 'center'
                               });
                               }} 
-                              className="flex-auto cursor-pointer text-white rounded-md bg-blue-500 hover:bg-blue-600 duration-100 active:scale-95 rounded-lg btn-md mx-1 my-1 w-full lg:my-0">
+                              className="flex-auto cursor-pointer text-white rounded-md bg-blue-500 hover:bg-blue-600 duration-100 active:scale-95 btn-md mx-1 my-1 w-full lg:my-0 shadow">
                               {
                               pausaTiempo ?
                                 <span className="text-base font-medium">REANUDAR ENTRENAMIENTO</span>
@@ -399,10 +401,10 @@ export default function ComenzarRutina() {
                                 <span className="text-base font-medium">PAUSAR</span>
                               }
                             </button>
-                            <button onClick={() => {handleFinalizar()}} className="flex-auto cursor-pointer text-white rounded-md bg-emerald-500 hover:bg-emerald-600 duration-100 active:scale-95 rounded-lg btn-md mx-1 my-1 w-full lg:my-0">
+                            <button onClick={() => {handleFinalizar()}} className="flex-auto cursor-pointer text-white rounded-md bg-emerald-500 hover:bg-emerald-600 duration-100 active:scale-95 btn-md mx-1 my-1 w-full lg:my-0 shadow">
                               <span className="text-base font-medium">FINALIZAR</span>
                             </button>
-                            <button onClick={() => {setMostrarEliminar(true)}} className="flex-auto cursor-pointer text-white rounded-md bg-red-500 hover:bg-red-600 duration-100 active:scale-95 rounded-lg btn-md mx-1 my-1 w-full lg:my-0">
+                            <button onClick={() => {setMostrarEliminar(true)}} className="flex-auto cursor-pointer text-white rounded-md bg-red-500 hover:bg-red-600 duration-100 active:scale-95 btn-md mx-1 my-1 w-full lg:my-0 shadow">
                               <span className="text-base font-medium">CANCELAR</span>
                             </button>
                           </div>  
@@ -413,16 +415,16 @@ export default function ComenzarRutina() {
                             setPausaTiempo(!pausaTiempo)
                             setComenzarEntrenamiento(true)
                             }} 
-                            className="flex-auto btn text-white btn-secondary rounded-lg btn-md mx-1 my-1 w-full duration-75 lg:my-0 active:bg-blue-800 text-2xl h-20"
+                            className="flex-auto text-xl font-medium h-16 cursor-pointer text-white rounded-md bg-blue-500 hover:bg-blue-600 duration-100 active:scale-95 btn-md mx-1 my-1 w-full lg:my-0 shadow"
                           >
                               {
                               pausaTiempo ?
                                 comenzarEntrenamiento ?
-                                'Reanudar Entrenamiento'
+                                'REANUDAR ENTRENAMIENTO'
                                 :
-                                'Comenzar Entrenamiento'
+                                'COMENZAR ENTRENAMIENTO'
                               :
-                              'Comenzar Entrenamiento'
+                              'COMENZAR ENTRENAMIENTO'
                               }
                             </button>
                         </div>
