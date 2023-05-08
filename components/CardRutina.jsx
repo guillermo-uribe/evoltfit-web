@@ -26,10 +26,12 @@ const CardRutina = ({ rutina }) => {
         .select(`
           id,
           ejercicio(
-            nombre
+            nombre,
+            musculo_primario
           ),
           rutinas_ejercicio_sets (
-            id
+            id,
+            reps
           ),
           orden
         `)
@@ -105,7 +107,10 @@ const CardRutina = ({ rutina }) => {
             <div 
               className={
                 (rutina.rutina_en_progreso[0].count !== 1 ?
-                  'bg-blue-500 hover:bg-blue-600 cursor-pointer'
+                  rutina.esSE == false ?
+                    'bg-blue-500 hover:bg-blue-600 cursor-pointer'
+                    :
+                    'bg-indigo-500 hover:bg-indigo-600 cursor-pointer'
                   :
                   'bg-emerald-500 hover:bg-emerald-600 cursor-pointer'
                 )
@@ -129,6 +134,14 @@ const CardRutina = ({ rutina }) => {
             >
               <div className="flex flex-row w-full my-4 px-4">
                 <div className="flex items-center w-10/12">
+                  {
+                    rutina.esSE == true ?
+                    <div className='text-white text-3xl mr-2 translate-y-1'>
+                      <ion-icon name="share-social-outline"></ion-icon>
+                    </div>
+                    :
+                    ''
+                  }
                   <span className="tracking-wide font-medium text-xl text-white truncate">
                     {rutina.nombre}
                   </span>
@@ -227,10 +240,16 @@ const CardRutina = ({ rutina }) => {
                             {(ejercicio.orden+1) + '. ' + ejercicio.ejercicio.nombre}
                           </span>
                           <span className="w-3/12 font-light text-base sm:ml-1">
-                            {ejercicio.rutinas_ejercicio_sets.length === 1 ? 
-                              '| ' + ejercicio.rutinas_ejercicio_sets.length + ' Set'
-                            :
-                              '| ' + ejercicio.rutinas_ejercicio_sets.length + ' Sets'
+                            {
+                              ejercicio.ejercicio.musculo_primario == 'Cardio' ?
+                              '| ' + ejercicio.rutinas_ejercicio_sets[0].reps + ' Min.'
+                              :
+                              (
+                                  ejercicio.rutinas_ejercicio_sets.length === 1 ? 
+                                  '| ' + ejercicio.rutinas_ejercicio_sets.length + ' Set'
+                                :
+                                  '| ' + ejercicio.rutinas_ejercicio_sets.length + ' Sets'
+                              )
                             }
                             
                           </span>
@@ -369,8 +388,12 @@ const CardRutina = ({ rutina }) => {
                       ''
                     :
                     <button 
-                      className="flex flex-row items-center justify-center cursor-pointer text-white rounded-md bg-blue-500
-                      hover:bg-blue-600 duration-100 active:scale-95 h-full w-fit px-3"
+                      className={
+                        rutina.esSE == true ?
+                        "flex flex-row items-center justify-center cursor-pointer text-white rounded-md bg-indigo-500 hover:bg-indigo-600 duration-100 active:scale-95 h-full w-fit px-3"
+                        :
+                        "flex flex-row items-center justify-center cursor-pointer text-white rounded-md bg-blue-500 hover:bg-blue-600 duration-100 active:scale-95 h-full w-fit px-3"
+                      }
                       onClick={() => {
                         router.push({ 
                           pathname: '/comenzarRutina',

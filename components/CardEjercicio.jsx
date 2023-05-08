@@ -100,7 +100,8 @@ const CardEjercicio = ({ rutinaEjercicio, getEjerciciosRutina, index }) => {
         const { data, error } = await supabase
         .from('rutinas_ejercicio_sets')
         .insert({
-            ejercicio_rutina: rutinaEjercicio.id, 
+            ejercicio_rutina: rutinaEjercicio.id,
+            reps: rutinaEjercicio.ejercicio.musculo_primario == 'Cardio' ? 60 : 12 
         })
         .select('*')
 
@@ -232,7 +233,14 @@ const CardEjercicio = ({ rutinaEjercicio, getEjerciciosRutina, index }) => {
                                 <tr>
                                     <th scope="col" className="text-center text-base pb-1 px-1">Set</th>
                                     <th scope="col" className="text-center text-base pb-1 border-l-2 border-r-2">Tipo</th>
-                                    <th scope="col" className="text-center text-base pb-1 border-l-2">Reps</th>
+                                    <th scope="col" className="text-center text-base pb-1 border-l-2">
+                                        {
+                                            ejercicio.musculo_primario == 'Cardio' ?
+                                            'Minutos'
+                                            :
+                                            'Reps'
+                                        }
+                                    </th>
                                     <th scope="col" className="text-lg"></th>
                                 </tr>
                             </thead>
@@ -251,17 +259,22 @@ const CardEjercicio = ({ rutinaEjercicio, getEjerciciosRutina, index }) => {
                                 <td className=""></td>
                                 <td className=""></td>
                                 <td className=""></td>
-                                <td 
-                                className="text-center"
-                                onClick={agregarSet}
-                                >
-                                    <div className="flex items-center justify-center f-full w-full">
-                                        <div className="flex items-center justify-center p-0.5 text-2xl cursor-pointer text-white rounded-md bg-blue-500
-                                        hover:bg-blue-600 duration-100 active:scale-95 my-0.5">
-                                            <ion-icon name="add-outline"></ion-icon>
+                                {
+                                    ejercicio.musculo_primario == 'Cardio' ?
+                                        <td className="h-10"></td>
+                                    :
+                                    <td 
+                                    className="text-center"
+                                    onClick={agregarSet}
+                                    >
+                                        <div className="flex items-center justify-center f-full w-full">
+                                            <div className="flex items-center justify-center p-0.5 text-2xl cursor-pointer text-white rounded-md bg-blue-500
+                                            hover:bg-blue-600 duration-100 active:scale-95 my-0.5">
+                                                <ion-icon name="add-outline"></ion-icon>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
+                                    </td>
+                                }
                             </tr>
                             </tbody>
                         </table>

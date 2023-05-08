@@ -248,7 +248,26 @@ export default function ComenzarRutina() {
     }
     else{
       console.log('Se terminó el entrenamiento')
-      router.push('/visualizadorProgreso')
+      router.push({ 
+        pathname: '/visualizadorProgreso',
+        query: { rutinaId: rutina.id }
+      })
+    }
+  }
+
+  async function cancelarEntrenamiento() {
+    const { error } = await supabase
+    .from('rutina_en_progreso')
+    .delete()
+    .match({rutina: rutina.id })
+
+    if (error) {
+      console.log('ERROR: Error al terminar el entrenamiento.')
+      console.log(error)
+    }
+    else{
+      console.log('Se canceló el entrenamiento.')
+      router.push('/rutinas')
     }
   }
 
@@ -292,7 +311,7 @@ export default function ComenzarRutina() {
           mostrarEliminar={mostrarEliminar}
           setMostrarEliminar={setMostrarEliminar}
           mensaje={'¿Seguro que quieres eliminar el progreso de tu entrenamiento?'}
-          funcEliminar={terminarEntrenamiento}
+          funcEliminar={cancelarEntrenamiento}
         />
         <br />
         <br />
