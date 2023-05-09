@@ -43,12 +43,12 @@ export default function Home() {
 
       if (error) {
         alert("ERROR: Hubo un error al cargar la imagen.")
-        console.log(error)
+        //console.log(error)
       }
 
       if (data) {
-        //console.log("Imagen cargada.")
-        console.log(data.path)
+        ////console.log("Imagen cargada.")
+        //console.log(data.path)
 
         const { error } = await supabase
         .from('calorias_productos')
@@ -61,13 +61,12 @@ export default function Home() {
           proteinas_pieza: formInput.proteinasPieza,
           grasas_pieza: formInput.grasasPieza,
           tipo: formInput.clasificacion,
-          cantidad: "c/100gr.",
           img: 'https://ichwtlkazihzvtpmxbnw.supabase.co/storage/v1/object/public/img/' + data.path
           })
 
         if (error) {
           alert("ERROR: Hubo un error al generar el registro.")
-          console.log(error)
+          //console.log(error)
         }
         else{
           if(!alert(
@@ -117,7 +116,7 @@ export default function Home() {
         setImagenNombre(value)
       }
 
-      console.log(name + " | " + id + ": " + value + " -> " + checked);
+      //console.log(name + " | " + id + ": " + value + " -> " + checked);
     },
     [formInput, setFormInput]
   );
@@ -175,6 +174,7 @@ export default function Home() {
                 <option id="Huevos" value="Huevos">Huevos</option>
                 <option id="Embutidos" value="Embutidos">Embutidos</option>
                 <option id="Carne de Ave" value="Carne de Ave">Carne de Ave</option>
+                <option id="Yoghurt" value="Yoghurt">Yoghurt</option>
               </select>
             </div>
 
