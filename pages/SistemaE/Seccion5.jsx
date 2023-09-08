@@ -41,14 +41,7 @@ function Seccion5({ formData2, onSubmit }) {
     onSubmit({ edad: 0, altura: 0, peso: 0 }); // Enviamos un objeto con los campos del formulario en 0
   }
   return (
-    <div className="flex flex-col items-center relative">
-      <button
-        type="button"
-        onClick={omitir}
-        className="absolute left-0 xl:bottom-14 bottom-12 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 "
-      >
-        Omitir
-      </button>
+    <div>
       <div className="grid place-items-center">
         <div className="font-catamaran text-2xl md:text-3xl bg-gradient-to-r from-blue-600 via-blue-800 to-black bg-clip-text text-transparent mt-7 font-bold text-center">
           <h1>Cuéntanos más de ti</h1>
@@ -56,16 +49,16 @@ function Seccion5({ formData2, onSubmit }) {
       </div>
       <br />
 
-      <div className="w-full lg:w-1/2">
+      <div>
         <form>
-          <div className="mb-1 w-full">
+          <div className="grid place-items-center">
             <label className="font-catamaran text-lg">
               Edad:
               <select
                 name="edad"
                 onChange={handleChange}
                 onBlur={enviarauto}
-                className="select w-full bg-white text-base font-normal rounded-xl shadow border border-gray-100 focus:border-blue-500 focus:border-2 text-black hover:bg-slate-50 shadow-gray-200"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
                 <option value="">Seleccione su edadㅤ</option>
                 <option value="Menor a 16 años">Menor a 16 años</option>
@@ -78,14 +71,15 @@ function Seccion5({ formData2, onSubmit }) {
             </label>
           </div>
           <br />
-          <div className="mb-1 w-full">
+          <div className="grid place-items-center">
             <label className="font-catamaran text-lg">
               Altura:
               <select
                 name="altura"
                 onChange={handleChange}
                 onBlur={enviarauto}
-                className="select w-full bg-white text-base font-normal rounded-xl shadow border border-gray-100 focus:border-blue-500 focus:border-2 text-black hover:bg-slate-50 shadow-gray-200"              >
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
                 <option value="">Seleccione su estatura</option>
                 <option value="140">Menos de 140 cm</option>
                 {Array.from({ length: 79 }, (_, i) => i + 141).map((estatura) => (
@@ -96,22 +90,30 @@ function Seccion5({ formData2, onSubmit }) {
             </label>
           </div>
           <br />
-          <div className="mb-1 w-full">
+          <div className="grid place-items-center">
             <label className="font-catamaran text-lg">
               Peso:
               <select
                 name="peso"
                 onChange={handleChange}
                 onBlur={enviarauto}
-                className="select w-full bg-white text-base font-normal rounded-xl shadow border border-gray-100 focus:border-blue-500 focus:border-2 text-black hover:bg-slate-50 shadow-gray-200"              >
-                <option value="">Seleccione su peso</option>
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              >
+                <option value="">Seleccione su pesㅤㅤ</option>
                 {Array.from({ length: 151 }, (_, i) => i + 30).map((peso) => (
                   <option value={`${peso}`} key={peso}>{peso} kg</option>
                 ))}
               </select>
             </label>
           </div>
-          <div className="">
+          <div className="absolute mt-5">
+            <button
+              type="button"
+              onClick={omitir}
+              className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 "
+            >
+              Omitir
+            </button>
           </div>
         </form>
       </div>
