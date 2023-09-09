@@ -69,15 +69,15 @@ export default function ComenzarRutina() {
     }
     else{
       setRutina(data[0]);
-      //console.log(data[0])
+      console.log(data[0])
 
-      if (data[0].rutina_en_progreso.length === 0) {
+      if (!data[0].rutina_en_progreso) {
         getEjerciciosRutina();
       }
       else{
-        setEjerciciosRutina(data[0].rutina_en_progreso[0].ejerciciosRutina);
-        setTiempo(data[0].rutina_en_progreso[0].tiempo)
-        setEjercicioSeleccionado(data[0].rutina_en_progreso[0].ejercicioSeleccionado)
+        setEjerciciosRutina(data[0].rutina_en_progreso.ejerciciosRutina);
+        setTiempo(data[0].rutina_en_progreso.tiempo)
+        setEjercicioSeleccionado(data[0].rutina_en_progreso.ejercicioSeleccionado)
         setComenzarEntrenamiento(true)
       }
     } 

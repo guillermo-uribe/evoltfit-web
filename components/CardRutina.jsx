@@ -96,7 +96,7 @@ const CardRutina = ({ rutina }) => {
           }
         />
         <div className={
-          (rutina.rutina_en_progreso[0].count !== 1 ?
+          (rutina.rutina_en_progreso.count !== 1 ?
             'hover:border-blue-500'
             :
             'hover:border-emerald-500'
@@ -106,7 +106,7 @@ const CardRutina = ({ rutina }) => {
           <div className="flex flex-col w-full h-full">
             <div 
               className={
-                (rutina.rutina_en_progreso[0].count !== 1 ?
+                (rutina.rutina_en_progreso.count !== 1 ?
                   rutina.esSE == false ?
                     'bg-blue-500 hover:bg-blue-600 cursor-pointer'
                     :
@@ -118,7 +118,7 @@ const CardRutina = ({ rutina }) => {
                 " rounded-t-md shadow-md duration-150 "
               }
               onClick={() => {
-                (rutina.rutina_en_progreso[0].count !== 1 ?
+                (rutina.rutina_en_progreso.count !== 1 ?
                   router.push({
                       pathname: '/editarRutina',
                       query: { rutina: rutina.id }
@@ -147,7 +147,7 @@ const CardRutina = ({ rutina }) => {
                   </span>
                 </div>
                 <div className="flex justify-end items-center w-2/12 text-3xl text-white">
-                  {rutina.rutina_en_progreso[0].count !== 1 ?
+                  {rutina.rutina_en_progreso.count !== 1 ?
                     <ion-icon name="create-outline"></ion-icon>
                   :
                     <div className="h-7 w-9 fill-white">
@@ -261,7 +261,7 @@ const CardRutina = ({ rutina }) => {
           </div>
           <div className="px-4 pb-4 rounded-b-md">
             {
-              rutina.rutina_en_progreso[0].count == 1 ?
+              rutina.rutina_en_progreso.count == 1 ?
                 <div className="flex flex-row w-full">
                   <div className="flex flex-row space-x-2">
                     <button 

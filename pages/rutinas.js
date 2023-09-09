@@ -89,6 +89,7 @@ export default function Home() {
     else{
       console.log(data);
       setRutinas(data);
+      console.log('COUNT: ' + data[1].rutina_en_progreso.count)
     }
   }
 
