@@ -21,7 +21,7 @@ export default function Home() {
         if(error){
           setFetchError('Error al conseguir datos');
           setDatos(null);
-          console.log(error);
+          //console.log(error);
         }
         if(data){
           setDatos(data);

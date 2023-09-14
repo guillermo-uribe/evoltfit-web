@@ -90,11 +90,11 @@ export default function Home() {
       if (error) {
         setDatos(null);
         setFetchError("Error al conseguir datos");
-        console.log("Error: " + error);
+        //console.log("Error: " + error);
       } else {
         setDatos(data);
         setFetchError(null);
-        console.log("Se envió un correo de verificación");
+        //console.log("Se envió un correo de verificación");
       }
     }
   };

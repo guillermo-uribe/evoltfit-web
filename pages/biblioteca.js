@@ -115,7 +115,7 @@ export default function Home() {
     const data = await query
 
     setEjercicios(data.data);
-    console.log(data.data)
+    //console.log(data.data)
 
     //CONTEO TOTAL DE REGISTROS
 
@@ -130,7 +130,7 @@ export default function Home() {
     const count = await query
 
     setCantidad(count.count);
-    console.log(count.count);
+    //console.log(count.count);
   }
 
   function incluye(arreglo, buscar) {

@@ -32,7 +32,7 @@ export default function DetalleEjercicio() {
     if(data.session){
       setSesion(data.session);
       getRutinas(data.session)
-      console.log(data.session);
+      //console.log(data.session);
     } 
     else {
       setSesion(null);
@@ -47,8 +47,8 @@ export default function DetalleEjercicio() {
     .eq('id', ejercicioIndex)
 
     if (error) {
-      console.log('ERROR: No se encontró el ejercicio.')
-      console.log(error)
+      //console.log('ERROR: No se encontró el ejercicio.')
+      //console.log(error)
       router.push('/biblioteca')
     }
     else{
@@ -64,8 +64,8 @@ export default function DetalleEjercicio() {
     .eq('usuario', session.user.id)
 
     if (error) {
-      console.log('ERROR: Hubo un error al recuperar la rutina.')
-      console.log(error)
+      //console.log('ERROR: Hubo un error al recuperar la rutina.')
+      //console.log(error)
     }
     else{
       //console.log(data);
@@ -91,8 +91,8 @@ export default function DetalleEjercicio() {
       .select()
 
     if (error) {
-      console.log(error)
-      console.log("ERROR: Hubo un error al crear una nueva rutina.")
+      //console.log(error)
+      //console.log("ERROR: Hubo un error al crear una nueva rutina.")
     }
     else{
       //console.log(data);
@@ -124,11 +124,11 @@ export default function DetalleEjercicio() {
       `)
 
     if (error) {
-      console.log(error)
-      console.log("ERROR: Hubo un error al agregar un nuevo ejercicio.")
+      //console.log(error)
+      //console.log("ERROR: Hubo un error al agregar un nuevo ejercicio.")
     }
     else{
-      console.log("Se agregó un nuevo ejercicio.")
+      //console.log("Se agregó un nuevo ejercicio.")
       //console.log(data[0])
       
       const { error } = await supabase
@@ -138,11 +138,11 @@ export default function DetalleEjercicio() {
         })
 
       if (error) {
-        console.log(error)
-        console.log("ERROR: Hubo un error al agregar un nuevo set.")
+        //console.log(error)
+        //console.log("ERROR: Hubo un error al agregar un nuevo set.")
       }
       else{
-        console.log("Se agregó un nuevo set.")
+        //console.log("Se agregó un nuevo set.")
         router.push({
           pathname: '/editarRutina',
           query: { rutina: idRutina }
@@ -174,7 +174,7 @@ export default function DetalleEjercicio() {
         }
       }
 
-      console.log(name + " | " + id + ": " + value + " -> " + checked);
+      //console.log(name + " | " + id + ": " + value + " -> " + checked);
       //console.log(formInput.equipo)
     },
     [formInput, setFormInput, sesion, ejercicio]

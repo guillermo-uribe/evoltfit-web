@@ -114,13 +114,13 @@ export default function VisualizadorProgreso() {
           )
           .eq("rutina", rutinas[i].id);
         if (error) {
-          console.log(
-            `ERROR: Hubo un error al recuperar los ejercicios de la rutina ${rutinas[i].id}.`
-          );
-          console.log(error);
+          //console.log(
+           // `ERROR: Hubo un error al recuperar los ejercicios de la rutina ${rutinas[i].id}.`
+          //);
+          //console.log(error);
         } else {
-          console.log(`Ejercicios de la rutina ${rutinas[i].id}:`);
-          console.log(data);
+          //console.log(`Ejercicios de la rutina ${rutinas[i].id}:`);
+         // console.log(data);
           ejerciciosPorRutina[rutinas[i].id] = data;
         }
       }
@@ -128,7 +128,7 @@ export default function VisualizadorProgreso() {
       //console.log(ejerciciosPorRutina);
       setEjerciciosRutina(ejerciciosPorRutina);
       setModelocarga(false);
-      console.log("%%%%%%%%%%%%%% RutinaIndex: " + rutinaId)
+      //console.log("%%%%%%%%%%%%%% RutinaIndex: " + rutinaId)
       if (!rutinaId) {
         rutinaId = "Ninguna"
       }
@@ -330,7 +330,7 @@ export default function VisualizadorProgreso() {
   }
 
   async function calcularVolumen(sets) {
-    console.log(sets)
+    //console.log(sets)
     let volumenTotal = 0
     let ejercicios = []
     let volumen = []
@@ -374,8 +374,8 @@ export default function VisualizadorProgreso() {
       .eq('id', ejercicios[index])
 
       if (error) {
-        console.log('ERROR: No se encontró el ejercicio.')
-        console.log(error)
+       // console.log('ERROR: No se encontró el ejercicio.')
+       // console.log(error)
       }
       else{
         volumenEjercicios.push({
@@ -394,11 +394,11 @@ export default function VisualizadorProgreso() {
       })
     }
 
-    console.log(volumenTotal + ' lbs')
-    console.log('Volumen por Ejercicio:')
-    console.log(volumenEjercicios)
-    console.log('Volumen por Dia:')
-    console.log(volumenDiario)
+    //console.log(volumenTotal + ' lbs')
+    //console.log('Volumen por Ejercicio:')
+    //console.log(volumenEjercicios)
+    //console.log('Volumen por Dia:')
+    //console.log(volumenDiario)
 
     if (volumenEjercicios.length == 0){
       volumenEjercicios = null
@@ -625,7 +625,7 @@ export default function VisualizadorProgreso() {
   }
 
   function construirDatos(sumatoriaCal, sumatoriaPro, sumatoriaGra) {
-    console.log(sumatoriaCal);
+    //console.log(sumatoriaCal);
 
     const DatosGrafica = [
       {
@@ -725,7 +725,7 @@ export default function VisualizadorProgreso() {
 
     if (err) {
       //console.log("ERROR: Hubo un error obteniendo la meta del ususario");
-      console.log(err);
+      //console.log(err);
     } else {
       if (res.length == 0) {
         //console.log("El usuario no tiene una meta establecida");
@@ -745,7 +745,7 @@ export default function VisualizadorProgreso() {
       .eq("id", idUsuario);
 
     if (error) {
-      console.log("ERROR: No se pudo conseguir el perfil.");
+      //console.log("ERROR: No se pudo conseguir el perfil.");
     } else {
       //console.log(data[0])
       setPerfil(data[0]);

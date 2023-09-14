@@ -124,8 +124,8 @@ function arriba()  {
       .eq("id", idUsuario);
 
     if (error) {
-      console.log("ERROR: No se pudo conseguir el perfil.");
-      console.log(error);
+      //console.log("ERROR: No se pudo conseguir el perfil.");
+      //console.log(error);
     } else {
       //console.log(data[0])
       setPerfil(data[0]);
@@ -306,18 +306,18 @@ function arriba()  {
   }
   //actualizador para visualizar el funcionamiento de datos
   useEffect(() => {
-    console.log("------------------");
-    console.log(formData);
-    console.log(arreglo);
-    console.log("Herramientas: ");
-    console.log(checkboxes);
-    console.log("Semana: ");
-    console.log(checkboxes2);
-    console.log("Imputs: ");
-    console.log(formData2);
+    //console.log("------------------");
+    //console.log(formData);
+    //console.log(arreglo);
+    //console.log("Herramientas: ");
+    //console.log(checkboxes);
+    //console.log("Semana: ");
+    //console.log(checkboxes2);
+    //console.log("Imputs: ");
+    //console.log(formData2);
     //console.log(arreglo[2]);
     //console.log(formHerra);
-    console.log(value);
+    //console.log(value);
     //para el botonfinal
     if (Object.entries(checkboxes).find((entry) => entry[1] === true)) {
       setFinalizar2(true);
@@ -442,33 +442,8 @@ function arriba()  {
               >
                 Comenzar
               </button>
-              <Link
-                href={{
-                  pathname: "../rutinaSE",
-                  query: {
-                    formData2: JSON.stringify(formData2),
-                    checkboxes: JSON.stringify(checkboxes),
-                    checkboxes2: JSON.stringify(checkboxes2),
-                    arreglo: JSON.stringify(arreglo),
-                    perfil: JSON.stringify(perfil),
-                  },
-                }}
-                style={{ display: "inline-block", marginRight: "10px" }}
-              >
-                <button
-                  className="bottonSig-2"
-                  style={{ display: "inline-block" }}
-                >
-                  TEST
-                </button>
-              </Link>
-              <button
-                className="bottonSig-2"
-                onClick={llenarrapido}
-                style={{ display: "inline-block", marginRight: "10px" }}
-              >
-                LLENAR PRIMERO
-              </button>
+             
+              
             </div>
           )}
         </div>

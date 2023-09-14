@@ -35,7 +35,7 @@ export default function Home() {
       console.log("ERROR: Hubo un error al registrar algo del formulario")
       console.log(error)
     }else{
-      console.log("Se envío el formulario de ayuda correctamente")
+      //console.log("Se envío el formulario de ayuda correctamente")
       alert("Enviado correctamente")
       e.target.reset()
     }

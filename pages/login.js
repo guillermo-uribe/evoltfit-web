@@ -50,12 +50,12 @@ export default function Home() {
       setMensajeAviso('Correo o contraseña incorrectos.');
       setColorAviso('red');
       setMostrarAviso(true)
-      console.log("Login fallido");
-      console.log(error);
+      //console.log("Login fallido");
+      //console.log(error);
     } else {
       setDatos(data);
       setFetchError(null);
-      console.log("Login exitoso");
+      //console.log("Login exitoso");
       router.push('/')
     }
   };

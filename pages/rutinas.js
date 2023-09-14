@@ -60,8 +60,8 @@ export default function Home() {
       .select()
 
     if (error) {
-      console.log(error)
-      console.log("ERROR: Hubo un error al crear una nueva rutina.")
+      //console.log(error)
+      //console.log("ERROR: Hubo un error al crear una nueva rutina.")
     }
     else{
       //console.log(data);
@@ -83,13 +83,13 @@ export default function Home() {
     .eq('usuario', session.user.id)
 
     if (error) {
-      console.log('ERROR: Hubo un error al recuperar la rutina.')
-      console.log(error)
+      //console.log('ERROR: Hubo un error al recuperar la rutina.')
+      //console.log(error)
     }
     else{
-      console.log(data);
+      //console.log(data);
       setRutinas(data);
-      console.log('COUNT: ' + data[1].rutina_en_progreso.count)
+      //console.log('COUNT: ' + data[1].rutina_en_progreso.count)
     }
   }
 

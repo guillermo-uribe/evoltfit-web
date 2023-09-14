@@ -56,7 +56,7 @@ export default function Home() {
 
       if (data) {
         //console.log("Imagen cargada.")
-        console.log(data.path)
+        //console.log(data.path)
 
         const { error } = await supabase
         .from('ejercicios')
@@ -168,7 +168,7 @@ export default function Home() {
         setImagenNombre(value)
       }
 
-      console.log(name + " | " + id + ": " + value + " -> " + checked);
+      //console.log(name + " | " + id + ": " + value + " -> " + checked);
       //console.log(formInput.musculoOtro)
 
 

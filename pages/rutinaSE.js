@@ -41,7 +41,7 @@ export default function Home() {
         .select("activo")
         .eq("id_usuario", data.session.user.id);
       if (pagos.length == 0) {
-        console.log("Este usuario no tiene plan");
+        //console.log("Este usuario no tiene plan");
         //SI no tiene un plan entonces
         const data8 = await supabase
           .from("perfiles")
@@ -49,7 +49,7 @@ export default function Home() {
           .eq("id", data.session.user.id);
 
         if (data8.data[0].se === 1) {
-          console.log("Tiene un uso.");
+          //console.log("Tiene un uso.");
           setLoadlogin(false);
           localStorage.setItem("bandera2", "false");
           const { error } = await supabase
@@ -60,24 +60,24 @@ export default function Home() {
             .eq("id", data.session.user.id);
 
           if (error) {
-            //console.log('ERROR: No se pudo actualizar el perfil.')
-            console.log(error);
+            ////console.log('ERROR: No se pudo actualizar el perfil.')
+            //console.log(error);
           } else {
-            //console.log('Perfil actualizado.')
+            ////console.log('Perfil actualizado.')
           }
         } else {
           if (localStorage.getItem("bandera2") !== "false") {
             router.push("/");
           } else {
             setLoadlogin(false);
-            //console.log("Todavia sigues dentro")
+            ////console.log("Todavia sigues dentro")
           }
         }
       } else {
-        //console.log("Tiene un Plan")
+        ////console.log("Tiene un Plan")
         setLoadlogin(false);
       }
-      //console.log(data);
+      ////console.log(data);
     } else {
       setSesion(null);
       router.push("/login");
@@ -244,7 +244,7 @@ export default function Home() {
       formulario === null
     ) {
       setsexo("No proporcionado");
-      setinfousuario("No se prorcionó toda la información del usuario");
+      setinfousuario("No se proporcionó toda la información del usuario");
     } else {
       setsexo("Sexo:" + opciones[0]);
       setinfousuario(
@@ -343,7 +343,7 @@ export default function Home() {
 
     const data = await query;
 
-    //console.log(data.data)
+    ////console.log(data.data)
     setData(data.data);
   }
 
@@ -394,7 +394,7 @@ export default function Home() {
   };
 
   if (!opcionesEjercicio[objetivo] || !opcionesEjercicio[objetivo][tiempo]) {
-    console.log("Error en el objetivo o tiempo seleccionado.");
+    //console.log("Error en el objetivo o tiempo seleccionado.");
     //return;
   }
   //Aqui se asignan los valores de repeticion, series y descanso.
@@ -424,7 +424,7 @@ export default function Home() {
     temp = 3;
     dosdecuatro = 0;
   } else {
-    //console.log("Error en el SE P:TIEMPO");
+    ////console.log("Error en el SE P:TIEMPO");
   }
   var card = 0;
   if (opciones[1] === "perdergrasa" || opciones[1] === "salud") {
@@ -1206,7 +1206,7 @@ export default function Home() {
   } else if (diasActivos === 1) {
     undia(diasActivos);
   } else {
-    //console.log("Error en el SE P:ENFOQUE");
+    ////console.log("Error en el SE P:ENFOQUE");
   }
 
   // <-------------- ---------------------------------- ---------------->
@@ -1326,10 +1326,10 @@ export default function Home() {
         // Copiamos el contenido del primer arreglo en el segundo arreglo
         arrays[idx2] = JSON.parse(JSON.stringify(arrays[idx1]));
       }
-      console.log(arrays);
+      //console.log(arrays);
       setArrays([...arrays]);
     } else {
-      console.log(arrays);
+      //console.log(arrays);
       setArrays([...arrays]);
     }
     setLoading(false);
@@ -1341,7 +1341,7 @@ export default function Home() {
 
   function mostrarPosicion(arrayIndex, index) {
     let obj2 = arrays[arrayIndex][index];
-    //console.log(obj2.nombreE)
+    ////console.log(obj2.nombreE)
     if (
       ![
         "Abdomen",
@@ -1390,7 +1390,7 @@ export default function Home() {
         obj2.id = siguienteEjercicio.id;
         setArrays([...arrays]);
       } else {
-        console.log("No hace Nada");
+        //console.log("No hace Nada");
       }
     } else {
       alert("No hay Ejercicios Para Asignar");
@@ -1455,10 +1455,10 @@ export default function Home() {
       .eq("id", sesion.user.id);
 
     if (error) {
-      console.log("ERROR: No se pudo actualizar el perfil.");
-      console.log(error);
+      //console.log("ERROR: No se pudo actualizar el perfil.");
+      //console.log(error);
     } else {
-      console.log("Perfil actualizado.");
+      //console.log("Perfil actualizado.");
     }
   }
   async function handleClick() {
@@ -1491,8 +1491,8 @@ export default function Home() {
           .select("id");
 
         if (error) {
-          console.log(error);
-          console.log(`ERROR: Hubo un error al crear ${nombreRutina}.`);
+          //console.log(error);
+          //console.log(`ERROR: Hubo un error al crear ${nombreRutina}.`);
         } else {
           const idNumero = data[0].id;
 
@@ -1520,7 +1520,7 @@ export default function Home() {
             ) {
               rutinaEjercicios(idNumero, i, j);
             } else {
-              //console.log("Encontró un Ejercicio que no tiene asignado nada")
+              ////console.log("Encontró un Ejercicio que no tiene asignado nada")
             }
             //----------------------------------------------------------------------------------------
           }
@@ -1534,9 +1534,9 @@ export default function Home() {
 
   const rutinaEjercicios = async (idNumero, i, j) => {
     //----------------------------------------------------------------------------------------
-    //console.log("Ejercicios")
-    //console.log(arrays[i][j].nombreE)
-    //console.log(arrays[i][j].id)
+    ////console.log("Ejercicios")
+    ////console.log(arrays[i][j].nombreE)
+    ////console.log(arrays[i][j].id)
     const tiempoMap = {
       "1min": 60,
       "1min 30sec": 90,
@@ -1560,11 +1560,11 @@ export default function Home() {
       .select();
 
     if (error) {
-      console.log(error);
-      console.log("ERROR: Hubo un error al agregar un nuevo ejercicio.");
+      //console.log(error);
+      //console.log("ERROR: Hubo un error al agregar un nuevo ejercicio.");
     } else {
-      //console.log("Se agregó un nuevo ejercicio.")
-      //console.log(data[0])
+      ////console.log("Se agregó un nuevo ejercicio.")
+      ////console.log(data[0])
       const iddelEjercicio = data[0].id;
 
       for (let k = 0; k < arrays[i][j].series; k++) {
@@ -1574,10 +1574,10 @@ export default function Home() {
         });
 
         if (error) {
-          console.log(error);
-          console.log("ERROR: Hubo un error al agregar un nuevo set.");
+          //console.log(error);
+          //console.log("ERROR: Hubo un error al agregar un nuevo set.");
         } else {
-          //console.log("Se agregó un nuevo set.")
+          ////console.log("Se agregó un nuevo set.")
         }
       }
     }
@@ -1612,14 +1612,14 @@ export default function Home() {
       if (localStorage.getItem("bandera") !== "true") {
         cambiar_ejercicios();
       } else {
-        //console.log("Si llega")
+        ////console.log("Si llega")
         setLoading(false);
       }
     }
-    //console.log(localStorage.getItem('bandera'));
+    ////console.log(localStorage.getItem('bandera'));
   }, [data]);
 
-  //console.log(infousuario)
+  ////console.log(infousuario)
   return (
     <div className="bg-stone-100 w-full">
       <Head>
@@ -1651,30 +1651,40 @@ export default function Home() {
           </p>
         </div>
       ) : (
-        <main>
+        <main className="mx-auto max-w-screen-2xl">
           <br />
           <br />
           <br />
           <br />
           <br />
-          <div style={{ float: 'left', marginLeft: '40px' }}>
-            <p>Rutina personalizada para {usuario.nombre}</p>
-            <p>Con estos datos:{infousuario}</p>
-
+          <div style={{ float: "left", marginLeft: "40px" }}>
+            <p className="resp-text-se text-lg sm:text-xl font-light text-black">
+              Rutina personalizada para{" "}
+              <span className="resp-text-se2 text-xl sm:text-2xl font-medium text-blue-600">
+                {usuario.nombre}
+              </span>
+            </p>
+            <p className="resp-text-se text-lg sm:text-xl font-light text-black">
+              Con estos datos: {infousuario}.
+            </p>
           </div>
           <br />
           <br />
-          <div className="p-8 table-container">
-            <table className="text-sm text-left rounded-md border-2 border-blue-600 text-gray-500 table chorizo">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3">Lunes</th>
-                  <th className="px-6 py-3">Martes</th>
-                  <th className="px-6 py-3">Miércoles</th>
-                  <th className="px-6 py-3">Jueves</th>
-                  <th className="px-6 py-3">Viernes</th>
-                  <th className="px-6 py-3">Sábado</th>
-                  <th className="px-6 py-3">Domingo</th>
+          <br />
+          <br />
+          <div className="flex justify-center p-8 table-container">
+            <table className="text-sm text-left rounded-md shadow-md border-blue-600 text-gray-500 chorizo">
+              <thead className="text-xs text-gray-700 ">
+                <tr className="bg-blue-300">
+                  <th className="px-6 py-3 text-center font-heebo">Lunes</th>
+                  <th className="px-6 py-3 text-center font-heebo">Martes</th>
+                  <th className="px-6 py-3 text-center font-heebo">
+                    Miércoles
+                  </th>
+                  <th className="px-6 py-3 text-center font-heebo">Jueves</th>
+                  <th className="px-6 py-3 text-center font-heebo">Viernes</th>
+                  <th className="px-6 py-3 text-center font-heebo">Sábado</th>
+                  <th className="px-6 py-3 text-center font-heebo">Domingo</th>
                 </tr>
               </thead>
 
@@ -1682,41 +1692,144 @@ export default function Home() {
                 {longestArray.map((_, index) => (
                   <tr key={`${arrays[index]}-${index}`} className="bg-white">
                     {arrays.map((array, arrayIndex) => (
-                      <td key={shortid.generate()} className="py-4 px-4">
+                      <td
+                        key={shortid.generate()}
+                        className="p-4 border-r border-b"
+                      >
                         {index < array.length ? (
-                          <p>
-                            {array[index].nombreE} <br />
-                            <img
-                              src={array[index].imgR}
-                              alt="hola"
-                              key={array[index]}
-                              style={{ width: "50px", height: "50px" }}
-                            ></img>
-                            <br />
-                            {array[index].series}x{array[index].repeticiones}{" "}
-                            <br />
-                            Descanso: {descanso}
-                            <button
-                              type="button"
-                              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-0.3 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                              onClick={() => mostrarPosicion(arrayIndex, index)}
-                            >
-                              <svg
-                                aria-hidden="true"
-                                className="w-4 h-4"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                  clipRule="evenodd"
-                                ></path>
-                              </svg>
-                              <span className="sr-only">Icon description</span>
-                            </button>
-                          </p>
+                          <div className="flex w-32 flex-col">
+                            <p className="text-zinc-800 font-medium font-heebo sizeNombreE">
+                              {array[index].nombreE}
+                            </p>
+
+                            <p className="text-blue-600 font-medium font-heebo">
+                              {array[index].etiqueta}
+                            </p>
+                            <div className="flex w-full gap-4 my-4">
+                              <img
+                                src={array[index].imgR}
+                                key={array[index]}
+                                className="rounded-full border-2 border-blue-600"
+                                style={{ width: "60px", height: "60px" }}
+                              />
+                              <div className="w-fit flex justify-center items-center">
+                                <button
+                                  type="button"
+                                  className="text-white p-1 bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-0.3 text-center inline-flex items-center"
+                                  onClick={() =>
+                                    mostrarPosicion(arrayIndex, index)
+                                  }
+                                >
+                                  <svg
+                                    aria-hidden="true"
+                                    className="w-7 h-7"
+                                    fill="currentColor"
+                                    viewBox="0 0 58 50"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    <g id="Layer_1" data-name="Layer 1">
+                                      <g>
+                                        <g>
+                                          <rect
+                                            className="cls-1"
+                                            x="35.08"
+                                            y="25.22"
+                                            width="6.92"
+                                            height="10.89"
+                                            rx="1.85"
+                                            ry="1.85"
+                                            transform="translate(54.07 77.4) rotate(-146.89)"
+                                          />
+                                          <rect
+                                            className="cls-1"
+                                            x="16.96"
+                                            y="13.4"
+                                            width="6.92"
+                                            height="10.89"
+                                            rx="1.85"
+                                            ry="1.85"
+                                            transform="translate(27.23 45.79) rotate(-146.89)"
+                                          />
+                                          <path
+                                            className="cls-1"
+                                            d="m39.72,35.68c.46.02,1.5.17,1.77-.24l2.62-4.01c.27-.42-.29-1.3-.49-1.72l-3.89,5.97Z"
+                                          />
+                                          <polyline
+                                            className="cls-1"
+                                            points="24.51 19.78 22.36 18.38 20.78 20.81 23.35 22.48 33.68 29.21"
+                                          />
+                                          <polyline
+                                            className="cls-1"
+                                            points="33.68 29.21 33.67 29.22 36.48 31.04 38.06 28.62 24.51 19.78"
+                                          />
+                                          <path
+                                            className="cls-1"
+                                            d="m19.29,13.76c-.52-.09-1.63-.24-1.93.23l-2.62,4.01c-.3.47.28,1.42.57,1.86l3.98-6.1Z"
+                                          />
+                                        </g>
+                                        <path
+                                          className="cls-1"
+                                          d="m27.55,0C15.51.51,5.7,9.59,4.09,21.32l-3.24-1.4c-.53-.23-1.05.35-.76.85l4.91,8.51c.23.4.81.4,1.04,0l4.91-8.51c.29-.5-.23-1.08-.76-.85l-3.14,1.36c.27-1.74.73-3.44,1.42-5.07,1.1-2.6,2.68-4.94,4.69-6.95,2.01-2.01,4.35-3.59,6.95-4.69,2.37-1,4.87-1.54,7.45-1.66V0Z"
+                                        />
+                                        <path
+                                          className="cls-1"
+                                          d="m58.72,29.17l-4.91-8.51c-.23-.4-.81-.4-1.04,0l-4.91,8.51c-.29.5.23,1.08.76.85l3.14-1.36c-.27,1.74-.73,3.44-1.42,5.07-1.1,2.6-2.68,4.94-4.69,6.95-2.01,2.01-4.35,3.59-6.95,4.69-2.69,1.14-5.56,1.72-8.51,1.72-.29,0-.56-.03-.85-.04v2.92c.28,0,.56.02.85.02,12.52,0,22.87-9.3,24.53-21.36l3.24,1.4c.53.23,1.05-.35.76-.85Z"
+                                        />
+                                        <circle
+                                          className="cls-1"
+                                          cx="7.5"
+                                          cy="34.64"
+                                          r="2"
+                                        />
+                                        <circle
+                                          className="cls-1"
+                                          cx="13.77"
+                                          cy="42.84"
+                                          r="2"
+                                        />
+                                        <circle
+                                          className="cls-1"
+                                          cx="22.38"
+                                          cy="47.61"
+                                          r="2"
+                                        />
+                                        <circle
+                                          className="cls-1"
+                                          cx="51.62"
+                                          cy="15.03"
+                                          r="2"
+                                        />
+                                        <circle
+                                          className="cls-1"
+                                          cx="45.34"
+                                          cy="6.83"
+                                          r="2"
+                                        />
+                                        <circle
+                                          className="cls-1"
+                                          cx="36.74"
+                                          cy="2.07"
+                                          r="2"
+                                        />
+                                      </g>
+                                    </g>
+                                  </svg>
+                                </button>
+                              </div>
+                            </div>
+                            <p className="text-zinc-800 font-medium font-heebo">
+                              {array[index].series}x{array[index].repeticiones}{" "}
+                            </p>
+                            <div>
+                              <p className="text-zinc-800 font-medium font-heebo">
+                                Descanso:{" "}
+                                <span className="text-blue-600">
+                                  {" "}
+                                  {descanso}
+                                </span>
+                              </p>
+                            </div>
+                          </div>
                         ) : (
                           ""
                         )}{" "}
@@ -1730,52 +1843,45 @@ export default function Home() {
 
             <br></br>
             <br></br>
-           
           </div>
-          <div style={{ display: "flex" }}>
-            <div
-              style={{
-                border: "1px solid black",
-                padding: "10px",
-                width: "50%",
-                backgroundColor: 'white',
-              }}
-            >
-              <p style={{ margin: "0" }}>Tu objetivo es: {objetivoUsuario} <br /> Entonces {textoDeObjetivo}</p>
-            </div>
-            <div
-              style={{
-                border: "1px solid black",
-                padding: "10px",
-                width: "50%",
-                backgroundColor: 'white',
-              }}
-            >
-              <p style={{ margin: "0" }}>Eres {nivelusuario}:<br /> Primero {textoNivel}</p>
-            </div>
-          </div>
-          <div style={{ display: "flex" }}>
-            <div
-              style={{
-                border: "1px solid black",
-                padding: "10px",
-                width: "50%",
-                backgroundColor: 'white',
-              }}
-            >
-              <p style={{ margin: "0" }}>{mv} <br />{nivelvolumen} <br /> Frecuencia: {nivelfrecuencia} por semana</p>
-            </div>
-            <div
-              style={{
-                border: "1px solid black",
-                padding: "10px",
-                width: "50%",
-                backgroundColor: 'white',
-              }}
-            >
-              <p style={{ margin: "0" }}>Seleccionaste un enfoque en {enfoquetitulo}:<br />{enfoquetexti}</p>
+
+          <div className="p-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2">
+              <div className="border hover:scale-105 mb-6 duration-100 w-12/12 rounded-md shadow-md bg-white p-5 md:p-3">
+                <h1 className="font-heebo font-semibold text-blue-600 text-sm md:text-base">
+                  Tu objetivo es: {objetivoUsuario}
+                </h1>
+                <h1 className="font-heebo text-black text-justify text-sm md:text-base">
+                  Entonces {textoDeObjetivo}
+                </h1>
+              </div>
+              <div className="border hover:scale-105 mb-6 duration-100 w-12/12 rounded-md shadow-md bg-white p-5 md:p-3">
+                <h1 className="font-heebo font-semibold text-blue-600 text-sm md:text-base">
+                  Eres {nivelusuario}:
+                </h1>
+                <h1 className="font-heebo text-black text-justify text-sm md:text-base">
+                  Primero {textoNivel}
+                </h1>
+              </div>
+              <div className="border hover:scale-105 mb-6 duration-100 w-12/12 rounded-md shadow-md bg-white p-5 md:p-3">
+                <h1 className="font-heebo text-black text-justify text-sm md:text-base">
+                  {nivelvolumen}{" "}
+                </h1>
+                <h1 className="font-heebo font-semibold text-blue-600 text-sm md:text-base">
+                  Frecuencia: {nivelfrecuencia} por semana
+                </h1>
+              </div>
+              <div className="border hover:scale-105 mb-6 duration-100 w-12/12 rounded-md shadow-md bg-white p-5 md:p-3">
+                <h1 className="font-heebo font-semibold text-blue-600 text-sm md:text-base">
+                  Seleccionaste un enfoque en {enfoquetitulo}:
+                </h1>
+                <h1 className="font-heebo text-black text-justify text-sm md:text-base">
+                  {enfoquetexti}
+                </h1>
+              </div>
             </div>
           </div>
+
           <br />
           <div className="flex justify-center">
             <button onClick={handleClick} className="bottonSig-2 ">
@@ -1783,7 +1889,7 @@ export default function Home() {
             </button>
           </div>
           <br />
-          <br /> 
+          <br />
           <br />
         </main>
       )}

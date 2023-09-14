@@ -80,12 +80,12 @@ export default function Home() {
       if(error){
         setDatos(null);
         setFetchError('Error al actualizar contraseña.');
-        console.log("Error: " + error);
+        //console.log("Error: " + error);
       } 
       else {
         setDatos(data);
         setFetchError(null);
-        console.log("Contraseña actualizada: " + data);
+        //console.log("Contraseña actualizada: " + data);
         //router.push('/login')
       }
     }
